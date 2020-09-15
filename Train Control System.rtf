@@ -1,0 +1,934 @@
+{\rtf\ansi{\fonttbl
+{\f0\froman Times New Roman;}
+{\f1\ftech Symbol;}
+{\f2\fnil \fprq2 \fcharset2 Zedfont;}}
+\plain \keep 
+\par {\f2 \'c8_}{\f0 \i Edge}{\f0 [}{\f0 \i V}{\f0 ]}{\f2 ___________________________________\line
+\'ae}{\f0 \i endpoints: }{\f2 F}{\f0 \i  V\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i # endpoints = }{\f0 2\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i Path}{\f0 [}{\f0 \i V}{\f0 ]}{\f2 ___________________________________\line
+\'ae}{\f0 \i edges: }{\f0 iseq}{\f0 \i  Edge}{\f0 [}{\f0 \i V}{\f0 ]\line
+}{\f2 \'ae}{\f0 \i vertices: }{\f0 iseq}{\f0 \i  V\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i # edges + }{\f0 1}{\f0 \i  = # vertices\line
+}{\f2 \'aeA}{\f0 \i  i, j: }{\f0 dom}{\f0 \i  vertices\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i i + }{\f0 1}{\f0 \i  = j }{\f2 \'de}{\f0 \i  }{\f2 (}{\f0 \i edges i}{\f2 )}{\f0 \i .endpoints = }{\f2 \{}{\f0 \i vertices i}{\f2 ,}{\f0 \i  vertices j}{\f2 \}\line
+\'d0_______________________________________\line
+
+}
+\par {\f0 \i Location}{\f2  ==}{\f0 \i  }{\f2 Z}{\f0 \i  }{\f2 x}{\f0 \i  }{\f2 Z}{\f0 \i 
+}\line
+\par {\f0 \i TrainModel}{\f0  ::}{\f2 = }{\f0 \i AM }{\f2 | }{\f0 \i ADK }{\f2 | }{\f0 \i ADC }{\f2 | }{\f0 \i DC }{\f2 | }{\f0 \i DX }{\f2 | }{\f0 \i DA
+}\line
+\par {\f2 \'c8_}{\f0 \i TrainTrack }{\f2 _________________________________\line
+\'ae}{\f0 \i Edge}{\f0 [}{\f0 \i Location}{\f0 ]\line
+}{\f2 \'ae}{\f0 \i compatibility: }{\f2 F}{\f0 \i  TrainModel\line
+}{\f2 \'ae}{\f0 \i length: }{\f2 N}{\f0 \i }{\f0 \sub 1}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i maxSpeed: }{\f2 N}{\f0 \i \line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'ae}{\f0 \i getTrack: }{\f2 F}{\f0 \i  TrainTrack }{\f2 x}{\f0 \i  }{\f2 F}{\f0 \i  Location }{\f2 \'a7}{\f0 \i  TrainTrack\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i getTrack\line
+}{\f2 \'ae}{\f0 \i   = }{\f2 (l}{\f0 \i  ts: }{\f2 F}{\f0 \i  TrainTrack; e: }{\f2 F}{\f0 \i  Location\line
+}{\f2 \'ae}{\f0 \i          }{\f2 | }{\f0 \i # e = }{\f0 2}{\f0 \i  }{\f2 \'a6}{\f0 \i  # }{\f2 \{ }{\f0 \i  t: ts }{\f2 | }{\f0 \i t.endpoints = e}{\f2  \}}{\f0 \i  = }{\f0 1\line
+}{\f2 \'ae}{\f0 \i          }{\f2 \'a5 (m}{\f0 \i  t: TrainTrack }{\f2 | }{\f0 \i t.endpoints = e}{\f2 ))\line
+
+}
+\par {\f2 \'ae}{\f0 \i getTrackEndpoints: }{\f2 F}{\f0 \i  TrainTrack }{\f2 f}{\f0 \i  }{\f2 F}{\f0 \i  }{\f2 (}{\f0 \i }{\f2 F}{\f0 \i  Location}{\f2 )\line
+\'c7_______________\line
+\'ae}{\f0 \i getTrackEndpoints\line
+}{\f2 \'ae}{\f0 \i   = }{\f2 (l}{\f0 \i  ts: }{\f2 F}{\f0 \i  TrainTrack }{\f2 \'a5 \{ }{\f0 \i  e: }{\f2 F}{\f0 \i  Location }{\f2 | E}{\f0 \i  t: ts }{\f2 \'a5 }{\f0 \i e = t.endpoints}{\f2  \})\line
+
+}
+\par {\f2 \'c8_}{\f0 \i TrackContinuation}{\f2 ______________________________\line
+\'ae}{\f0 \i Edge}{\f0 [}{\f0 \i TrainTrack}{\f0 ]\line
+}{\f2 \'ae}{\f0 \i location: Location\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i location }{\f2 e}{\f0 \i  }{\f2 I}{\f0 \i  }{\f2 (}{\f0 \i getTrackEndpoints endpoints}{\f2 )\line
+\'ae}{\f0 \i # }{\f2 (}{\f0 \i }{\f2 I}{\f0 \i  }{\f2 (}{\f0 \i getTrackEndpoints endpoints}{\f2 ))}{\f0 \i  = }{\f0 1\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'ae}{\f0 \i getTrackContinuation: }{\f2 F}{\f0 \i  TrainTrack }{\f2 \'a7}{\f0 \i  TrackContinuation\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i getTrackContinuation\line
+}{\f2 \'ae}{\f0 \i   = }{\f2 (l}{\f0 \i  ts: }{\f2 F}{\f0 \i  TrainTrack }{\f2 | }{\f0 \i # ts = }{\f0 2}{\f0 \i  }{\f2 \'a6}{\f0 \i  # }{\f2 (}{\f0 \i }{\f2 I}{\f0 \i  }{\f2 (}{\f0 \i getTrackEndpoints ts}{\f2 ))}{\f0 \i  = }{\f0 1\line
+}{\f2 \'ae}{\f0 \i          }{\f2 \'a5 (m}{\f0 \i  c: TrackContinuation }{\f2 | }{\f0 \i c.endpoints = ts}{\f2 ))\line
+
+}
+\par {\f2 \'c8_}{\f0 \i Route}{\f2 ____________________________________\line
+\'ae}{\f0 \i Edge}{\f0 [}{\f0 \i Location}{\f0 ]\line
+}{\f2 \'ae}{\f0 \i trackContinuations: }{\f2 F}{\f0 \i  TrackContinuation\line
+}{\f2 \'ae}{\f0 \i trackContinuationPath: Path}{\f0 [}{\f0 \i TrainTrack}{\f0 ]\line
+}{\f2 \'ae}{\f0 \i locationPath: Path}{\f0 [}{\f0 \i Location}{\f0 ]\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  c: TrackContinuation\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i c }{\f2 e}{\f0 \i  trackContinuations\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'db}{\f0 \i  }{\f2 (E}{\f0 \i  e: }{\f0 ran}{\f0 \i  trackContinuationPath.edges }{\f2 \'a5 }{\f0 \i e.endpoints = c.endpoints}{\f2 )\line
+\'ae}{\f0 \i # trackContinuationPath.vertices = # locationPath.edges\line
+}{\f2 \'aeA}{\f0 \i  i: }{\f0 dom}{\f0 \i  trackContinuationPath.vertices\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 (}{\f0 \i trackContinuationPath.vertices i}{\f2 )}{\f0 \i .endpoints\line
+}{\f2 \'ae}{\f0 \i         = }{\f2 (}{\f0 \i locationPath.edges i}{\f2 )}{\f0 \i .endpoints\line
+}{\f2 \'ae}{\f0 \i endpoints\line
+}{\f2 \'ae}{\f0 \i   = }{\f2 \{ }{\f0 \i  l: Location\line
+}{\f2 \'ae}{\f0 \i          }{\f2 | (E}{\f0 \i  t: }{\f0 ran}{\f0 \i  trackContinuationPath.vertices }{\f2 \'a5 }{\f0 \i l }{\f2 e}{\f0 \i  t.endpoints}{\f2 )\line
+\'ae}{\f0 \i            }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  c: trackContinuations }{\f2 \'a5 }{\f0 \i l }{\f2 \'eb}{\f0 \i  c.location}{\f2 ) \}\line
+\'d0_______________________________________\line
+
+}
+\par {\f2 \'ae}{\f0 \i routeMatches: Route }{\f2 j}{\f0 \i  Location }{\f2 x}{\f0 \i  Location\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  r: Route; entry: Location; exit: Location\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i r }{\f2 \'b8}{\f0 \i  }{\f2 (}{\f0 \i entry}{\f2 ,}{\f0 \i  exit}{\f2 )}{\f0 \i  }{\f2 e}{\f0 \i  routeMatches\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'db}{\f0 \i  head r.locationPath.vertices = entry\line
+}{\f2 \'ae}{\f0 \i         }{\f2 \'a6}{\f0 \i  last r.locationPath.vertices = exit\line
+
+}
+\par {\f2 \'c8_}{\f0 \i RoutePath}{\f2 __________________________________\line
+\'ae}{\f0 \i Path}{\f0 [}{\f0 \i Location}{\f0 ]\line
+}{\f2 \'ae}{\f0 \i routes: }{\f2 F}{\f0 \i  Route\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  route: Route\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i route }{\f2 e}{\f0 \i  routes }{\f2 \'db}{\f0 \i  }{\f2 (E}{\f0 \i  edge: }{\f0 ran}{\f0 \i  edges }{\f2 \'a5 }{\f0 \i edge.endpoints = route.endpoints}{\f2 )\line
+\'d0_______________________________________\line
+
+}
+\par {\f0 \i Signal}{\f0  ::}{\f2 = }{\f0 \i SIGNAL_CLEARED }{\f2 | }{\f0 \i SIGNAL_BLOCKED
+}\line
+\par {\f2 \'c8_}{\f0 \i InactiveBlockSection }{\f2 ____________________________\line
+\'ae}{\f0 \i tracks: }{\f2 F}{\f0 \i  TrainTrack\line
+}{\f2 \'ae}{\f0 \i signals: Route }{\f2 \'a7}{\f0 \i  Signal\line
+}{\f2 \'ae}{\f0 \i routeSettings: }{\f2 F}{\f0 \i  Route\line
+}{\f2 \'ae}{\f0 \i switches: }{\f2 F}{\f0 \i  TrackContinuation }{\f2 \'a7}{\f0 \i  TrackContinuation\line
+}{\f2 \'ae}{\f0 \i crossings: }{\f2 F}{\f0 \i  }{\f2 (}{\f0 \i }{\f2 F}{\f0 \i  TrackContinuation}{\f2 )\line
+\'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i BlockSection_TracksShouldBeConnected }{\f2 ____________________\line
+\'ae}{\f0 \i InactiveBlockSection\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  t1, t2: tracks\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 E}{\f0 \i  p: RoutePath\line
+}{\f2 \'ae}{\f0 \i           }{\f2 \'a5 }{\f0 \i p.routes }{\f2 z}{\f0 \i  }{\f0 dom}{\f0 \i  signals\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  }{\f2 \{}{\f0 \i head p.vertices}{\f2 ,}{\f0 \i  last p.vertices}{\f2 \}}{\f0 \i  }{\f2 z}{\f0 \i  t1.endpoints }{\f2 \fs18 U}{\f0 \i  t2.endpoints\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i BlockSection_AvailableRoutesAreMaximalAndShouldBeEquipped}{\f2 __________\line
+\'ae}{\f0 \i InactiveBlockSection\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  r: }{\f0 dom}{\f0 \i  signals\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 ran}{\f0 \i  r.trackContinuationPath.vertices }{\f2 z}{\f0 \i  tracks\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  l: r.endpoints }{\f2 \'a5 }{\f0 \i # }{\f2 \{ }{\f0 \i  t: tracks }{\f2 | }{\f0 \i l }{\f2 e}{\f0 \i  t.endpoints}{\f2  \}}{\f0 \i  = }{\f0 1}{\f2 )\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  c: r.trackContinuations\line
+}{\f2 \'ae}{\f0 \i              }{\f2 \'a5 (}{\f0 \i # }{\f2 \{ }{\f0 \i  t: tracks }{\f2 | }{\f0 \i c.location }{\f2 e}{\f0 \i  t.endpoints}{\f2  \}}{\f0 \i  = }{\f0 2\line
+}{\f2 \'ae}{\f0 \i                 }{\f2 v}{\f0 \i  # }{\f2 \{ }{\f0 \i  t: tracks }{\f2 | }{\f0 \i c.location }{\f2 e}{\f0 \i  t.endpoints}{\f2  \}}{\f0 \i  }{\f2 >}{\f0 \i  }{\f0 2\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  }{\f2 ((E}{\f0 \i  s: }{\f0 dom}{\f0 \i  switches }{\f2 \'a5 }{\f0 \i c }{\f2 e}{\f0 \i  s}{\f2 )\line
+\'ae}{\f0 \i                      }{\f2 v}{\f0 \i  }{\f2 (E}{\f0 \i  crossing: crossings }{\f2 \'a5 }{\f0 \i c }{\f2 e}{\f0 \i  crossing}{\f2 ))))\line
+\'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i BlockSection_JunctionsAreEquippedCompletely}{\f2 _________________\line
+\'ae}{\f0 \i InactiveBlockSection\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  l: Location\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 E}{\f0 \i  n: }{\f2 N}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i           }{\f2 \'a5 }{\f0 \i n = # }{\f2 \{ }{\f0 \i  t: TrainTrack }{\f2 | }{\f0 \i t }{\f2 e}{\f0 \i  tracks }{\f2 \'a6}{\f0 \i  l }{\f2 e}{\f0 \i  t.endpoints}{\f2  \}}{\f0 \i  }{\f2 \'a6}{\f0 \i  n }{\f2 >}{\f0 \i  }{\f0 2\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'de}{\f0 \i  }{\f2 (E}{\f0 \i  s: }{\f0 dom}{\f0 \i  switches }{\f2 \'a5 (E}{\f0 \i  c: s }{\f2 \'a5 }{\f0 \i l = c.location}{\f2 )}{\f0 \i  }{\f2 \'a6}{\f0 \i  # s + }{\f0 1}{\f0 \i  = n}{\f2 )\line
+\'ae}{\f0 \i               }{\f2 v}{\f0 \i  }{\f2 (E}{\f0 \i  crossing: crossings\line
+}{\f2 \'ae}{\f0 \i                      }{\f2 \'a5 (E}{\f0 \i  c: crossing }{\f2 \'a5 }{\f0 \i l = c.location}{\f2 )}{\f0 \i  }{\f2 \'a6}{\f0 \i  # crossing * }{\f0 2}{\f0 \i  = n}{\f2 )\line
+\'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i BlockSection_SwitchesAreValidStarGraphs}{\f2 ___________________\line
+\'ae}{\f0 \i InactiveBlockSection\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  continuations: }{\f0 dom}{\f0 \i  switches\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i switches continuations }{\f2 e}{\f0 \i  continuations\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  c: continuations }{\f2 \'a5 }{\f0 \i c.endpoints }{\f2 z}{\f0 \i  tracks}{\f2 )\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (E}{\f0 \i  t: tracks; l: Location\line
+}{\f2 \'ae}{\f0 \i              }{\f2 \'a5 (A}{\f0 \i  c: continuations }{\f2 \'a5 (}{\f0 \i c.location = l }{\f2 \'a6}{\f0 \i  t }{\f2 e}{\f0 \i  c.endpoints}{\f2 )))\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  # continuations }{\f2 >}{\f0 \i  }{\f0 1\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i BlockSection_CrossingsAreValidAndDisjoint}{\f2 __________________\line
+\'ae}{\f0 \i InactiveBlockSection\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  continuations: crossings\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 (A}{\f0 \i  c: continuations }{\f2 \'a5 }{\f0 \i c.endpoints }{\f2 z}{\f0 \i  tracks}{\f2 )\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  c1, c2: continuations\line
+}{\f2 \'ae}{\f0 \i              }{\f2 \'a5 (}{\f0 \i c1 }{\f2 \'eb}{\f0 \i  c2 }{\f2 \'de}{\f0 \i  c1.endpoints }{\f2 \fs18 I}{\f0 \i  c2.endpoints = }{\f2 0}{\f0 \i }{\f2 ))\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (E}{\f0 \i  l: Location }{\f2 \'a5 (A}{\f0 \i  c: continuations }{\f2 \'a5 }{\f0 \i c.location = l}{\f2 ))\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  # continuations }{\f2 >}{\f0 \i  }{\f0 1\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i Interlocking_RouteSettingsAreCompatible}{\f2 ___________________\line
+\'ae}{\f0 \i InactiveBlockSection\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i routeSettings }{\f2 z}{\f0 \i  }{\f0 dom}{\f0 \i  signals\line
+}{\f2 \'aeA}{\f0 \i  r1, r2: routeSettings\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i r1 }{\f2 \'eb}{\f0 \i  r2 }{\f2 \'de}{\f0 \i  r1.locationPath.vertices }{\f2 \fs18 I}{\f0 \i  r2.locationPath.vertices = }{\f2 0}{\f0 \i \line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i Interlocking_EquipmentMatchesRouteSettings }{\f2 _________________\line
+\'ae}{\f0 \i InactiveBlockSection\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  r: }{\f0 dom}{\f0 \i  signals }{\f2 \'a5 }{\f0 \i signals r = SIGNAL_CLEARED }{\f2 \'db}{\f0 \i  r }{\f2 e}{\f0 \i  routeSettings\line
+}{\f2 \'aeA}{\f0 \i  r: routeSettings; s: }{\f0 dom}{\f0 \i  switches\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 A}{\f0 \i  c: r.trackContinuations }{\f2 \'a5 }{\f0 \i c }{\f2 e}{\f0 \i  s }{\f2 \'de}{\f0 \i  switches s = c\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i BlockSection }{\f2 ________________________________\line
+\'ae}{\f0 \i InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i BlockSection_TracksShouldBeConnected\line
+}{\f2 \'ae}{\f0 \i BlockSection_AvailableRoutesAreMaximalAndShouldBeEquipped\line
+}{\f2 \'ae}{\f0 \i BlockSection_JunctionsAreEquippedCompletely\line
+}{\f2 \'ae}{\f0 \i BlockSection_SwitchesAreValidStarGraphs\line
+}{\f2 \'ae}{\f0 \i BlockSection_CrossingsAreValidAndDisjoint\line
+}{\f2 \'ae}{\f0 \i Interlocking_RouteSettingsAreCompatible\line
+}{\f2 \'ae}{\f0 \i Interlocking_EquipmentMatchesRouteSettings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InactiveBlockSection_Init}{\f2 __________________________\line
+\'ae}{\f0 \i InactiveBlockSection\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i tracks = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i signals = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i routeSettings = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i switches = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i crossings = }{\f2 0}{\f0 \i \line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InactiveBlockSection_InstallTrack}{\f2 ______________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i from?: Location\line
+}{\f2 \'ae}{\f0 \i to?: Location\line
+}{\f2 \'ae}{\f0 \i length?: }{\f2 N}{\f0 \i }{\f0 \sub 1}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i compatibleTrainModels?: }{\f2 F}{\f0 \i  TrainModel\line
+}{\f2 \'ae}{\f0 \i maxSpeed?: }{\f2 N}{\f0 \i \line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i }{\f2 !}{\f0 \i  }{\f2 (E}{\f0 \i  t: tracks }{\f2 \'a5 }{\f0 \i t.endpoints = }{\f2 \{}{\f0 \i to?}{\f2 ,}{\f0 \i  from?}{\f2 \})\line
+\'aeE}{\f0 \i  t: TrainTrack\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i t.endpoints = }{\f2 \{}{\f0 \i from?}{\f2 ,}{\f0 \i  to?}{\f2 \}\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t.length = length?\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t.compatibility = compatibleTrainModels?\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t.maxSpeed = maxSpeed?\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  tracks' = tracks }{\f2 \fs18 U}{\f0 \i  }{\f2 \{}{\f0 \i t}{\f2 \}\line
+\'ae}{\f0 \i signals' = signals\line
+}{\f2 \'ae}{\f0 \i routeSettings' = routeSettings\line
+}{\f2 \'ae}{\f0 \i switches' = switches\line
+}{\f2 \'ae}{\f0 \i crossings' = crossings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InactiveBlockSection_RemoveTrack }{\f2 ______________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i from?: Location\line
+}{\f2 \'ae}{\f0 \i to?: Location\line
+}{\f2 \'c7_______________\line
+\'aeE}{\f0 \i  t: tracks }{\f2 \'a5 }{\f0 \i t.endpoints = }{\f2 \{}{\f0 \i to?}{\f2 ,}{\f0 \i  from?}{\f2 \}}{\f0 \i  }{\f2 \'a6}{\f0 \i  tracks' = tracks \\ }{\f2 \{}{\f0 \i t}{\f2 \}\line
+\'ae}{\f0 \i signals' = signals\line
+}{\f2 \'ae}{\f0 \i routeSettings' = routeSettings\line
+}{\f2 \'ae}{\f0 \i switches' = switches\line
+}{\f2 \'ae}{\f0 \i crossings' = crossings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'ae}{\f0 \i getEquipedJunctionLocations: InactiveBlockSection }{\f2 f}{\f0 \i  }{\f2 F}{\f0 \i  Location\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i getEquipedJunctionLocations\line
+}{\f2 \'ae}{\f0 \i   = }{\f2 (l}{\f0 \i  b: InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i          }{\f2 \'a5 \{ }{\f0 \i  l: Location\line
+}{\f2 \'ae}{\f0 \i                 }{\f2 | (E}{\f0 \i  s: }{\f0 ran}{\f0 \i  b.switches }{\f2 \'a5 }{\f0 \i s.location = l}{\f2 )\line
+\'ae}{\f0 \i                   }{\f2 v}{\f0 \i  }{\f2 (E}{\f0 \i  cs: b.crossings }{\f2 \'a5 (E}{\f0 \i  c: cs }{\f2 \'a5 }{\f0 \i c.location = l}{\f2 )) \})\line
+
+}
+\par {\f2 \'ae}{\f0 \i getDivergingTracks: }{\f2 F}{\f0 \i  TrainTrack }{\f2 x}{\f0 \i  Location }{\f2 x}{\f0 \i  }{\f2 F}{\f0 \i  Location }{\f2 \'a7}{\f0 \i  }{\f2 F}{\f0 \i  TrainTrack\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i getDivergingTracks\line
+}{\f2 \'ae}{\f0 \i   = }{\f2 (l}{\f0 \i  ts: }{\f2 F}{\f0 \i  TrainTrack; c: Location; ds: }{\f2 F}{\f0 \i  Location\line
+}{\f2 \'ae}{\f0 \i          }{\f2 | A}{\f0 \i  d: ds }{\f2 \'a5 }{\f0 \i # }{\f2 \{ }{\f0 \i  t: ts }{\f2 | }{\f0 \i t.endpoints = }{\f2 \{}{\f0 \i c}{\f2 ,}{\f0 \i  d}{\f2 \} \}}{\f0 \i  = }{\f0 1\line
+}{\f2 \'ae}{\f0 \i          }{\f2 \'a5 \{ }{\f0 \i  t: ts }{\f2 | E}{\f0 \i  d: ds }{\f2 \'a5 }{\f0 \i t = getTrack }{\f2 (}{\f0 \i ts}{\f2 ,}{\f0 \i  }{\f2 \{}{\f0 \i c}{\f2 ,}{\f0 \i  d}{\f2 \}) \})\line
+
+}
+\par {\f2 \'ae}{\f0 \i getSwitch: TrainTrack }{\f2 x}{\f0 \i  }{\f2 F}{\f0 \i  TrainTrack }{\f2 f}{\f0 \i  }{\f2 F}{\f0 \i  TrackContinuation\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i getSwitch\line
+}{\f2 \'ae}{\f0 \i   = }{\f2 (l}{\f0 \i  convergingTrack: TrainTrack; divergingTracks: }{\f2 F}{\f0 \i  TrainTrack\line
+}{\f2 \'ae}{\f0 \i          }{\f2 \'a5 \{ }{\f0 \i  c: TrackContinuation\line
+}{\f2 \'ae}{\f0 \i                 }{\f2 | E}{\f0 \i  d: divergingTracks\line
+}{\f2 \'ae}{\f0 \i                       }{\f2 \'a5 }{\f0 \i c = getTrackContinuation }{\f2 \{}{\f0 \i convergingTrack}{\f2 ,}{\f0 \i  d}{\f2 \} \})\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InactiveBlockSection_RegisterSwitch}{\f2 _____________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i centre?: Location\line
+}{\f2 \'ae}{\f0 \i convergentEnd?: Location\line
+}{\f2 \'ae}{\f0 \i divergentEnds?: }{\f2 F}{\f0 \i  Location\line
+}{\f2 \'ae}{\f0 \i initialPosition?: Location\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i initialPosition? }{\f2 e}{\f0 \i  divergentEnds?\line
+}{\f2 \'ae}{\f0 \i # }{\f2 (}{\f0 \i divergentEnds? }{\f2 \fs18 U}{\f0 \i  }{\f2 \{}{\f0 \i centre?}{\f2 ,}{\f0 \i  convergentEnd?}{\f2 \})}{\f0 \i  = }{\f0 2}{\f0 \i  + # divergentEnds?\line
+}{\f2 \'aeA}{\f0 \i  end: divergentEnds? }{\f2 \fs18 U}{\f0 \i  }{\f2 \{}{\f0 \i convergentEnd?}{\f2 \}\line
+\'ae}{\f0 \i     }{\f2 \'a5 E}{\f0 \i  t: tracks }{\f2 \'a5 }{\f0 \i t.endpoints = }{\f2 \{}{\f0 \i centre?}{\f2 ,}{\f0 \i  end}{\f2 \}\line
+\'ae}{\f0 \i centre? }{\f2 \'e4}{\f0 \i  getEquipedJunctionLocations }{\f1 q}{\f0 \i  InactiveBlockSection\line
+}{\f2 \'aeE}{\f0 \i  to_add: }{\f2 F}{\f0 \i  TrackContinuation; initc: TrackContinuation\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i to_add\line
+}{\f2 \'ae}{\f0 \i         = getSwitch }{\f2 ((}{\f0 \i getTrack }{\f2 (}{\f0 \i tracks}{\f2 ,}{\f0 \i  }{\f2 \{}{\f0 \i centre?}{\f2 ,}{\f0 \i  convergentEnd?}{\f2 \})),\line
+\'ae}{\f0 \i                      }{\f2 (}{\f0 \i getDivergingTracks }{\f2 (}{\f0 \i tracks}{\f2 ,}{\f0 \i  centre?}{\f2 ,}{\f0 \i  divergentEnds?}{\f2 )))\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  initc\line
+}{\f2 \'ae}{\f0 \i           = }{\f2 (m}{\f0 \i  c: to_add\line
+}{\f2 \'ae}{\f0 \i                  }{\f2 | }{\f0 \i initialPosition? }{\f2 e}{\f0 \i  }{\f2 U}{\f0 \i  }{\f2 (}{\f0 \i getTrackEndpoints c.endpoints}{\f2 ))\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  switches' = switches }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i to_add }{\f2 \'b8}{\f0 \i  initc}{\f2 )\}\line
+\'ae}{\f0 \i tracks' = tracks\line
+}{\f2 \'ae}{\f0 \i signals' = signals\line
+}{\f2 \'ae}{\f0 \i routeSettings' = routeSettings\line
+}{\f2 \'ae}{\f0 \i crossings' = crossings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InactiveBlockSection_RegisterCrossing}{\f2 ____________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i centre?: Location\line
+}{\f2 \'ae}{\f0 \i ends?: }{\f2 F}{\f0 \i  }{\f2 (}{\f0 \i Location }{\f2 x}{\f0 \i  Location}{\f2 )\line
+\'c7_______________\line
+\'ae}{\f0 \i centre? }{\f2 \'e4}{\f0 \i  getEquipedJunctionLocations }{\f1 q}{\f0 \i  InactiveBlockSection\line
+}{\f2 \'aeA}{\f0 \i  e: ends?\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 E}{\f0 \i  t1, t2: tracks\line
+}{\f2 \'ae}{\f0 \i           }{\f2 \'a5 }{\f0 \i t1 }{\f2 \'eb}{\f0 \i  t2\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t1.endpoints = }{\f2 \{}{\f0 \i first e}{\f2 ,}{\f0 \i  centre?}{\f2 \}\line
+\'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2.endpoints = }{\f2 \{}{\f0 \i second e}{\f2 ,}{\f0 \i  centre?}{\f2 \}\line
+\'ae}{\f0 \i crossings'\line
+}{\f2 \'ae}{\f0 \i   = crossings\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \fs18 U}{\f0 \i  }{\f2 \{\{ }{\f0 \i  c: TrackContinuation\line
+}{\f2 \'ae}{\f0 \i             }{\f2 | E}{\f0 \i  e: ends?\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a5 }{\f0 \i c\line
+}{\f2 \'ae}{\f0 \i                       = getTrackContinuation }{\f2 \{(}{\f0 \i getTrack }{\f2 (}{\f0 \i tracks}{\f2 ,\line
+\'ae}{\f0 \i                                                          }{\f2 \{(}{\f0 \i first e}{\f2 ),\line
+\'ae}{\f0 \i                                                           centre?}{\f2 \})),\line
+\'ae}{\f0 \i                                               }{\f2 (}{\f0 \i getTrack }{\f2 (}{\f0 \i tracks}{\f2 ,\line
+\'ae}{\f0 \i                                                          }{\f2 \{(}{\f0 \i second e}{\f2 ),\line
+\'ae}{\f0 \i                                                           centre?}{\f2 \}))\} \}\}\line
+\'ae}{\f0 \i tracks' = tracks\line
+}{\f2 \'ae}{\f0 \i signals' = signals\line
+}{\f2 \'ae}{\f0 \i routeSettings' = routeSettings\line
+}{\f2 \'ae}{\f0 \i switches' = switches\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InactiveBlockSection_UnregisterJunction}{\f2 ___________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i centre?: Location\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i centre? }{\f2 e}{\f0 \i  getEquipedJunctionLocations }{\f1 q}{\f0 \i  InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i switches' = switches }{\f2 u}{\f0 \i  }{\f2 \{ }{\f0 \i  c: TrackContinuation }{\f2 | }{\f0 \i c.location = centre?}{\f2  \}\line
+\'ae}{\f0 \i tracks' = tracks\line
+}{\f2 \'ae}{\f0 \i signals' = signals\line
+}{\f2 \'ae}{\f0 \i routeSettings' = routeSettings\line
+}{\f2 \'ae}{\f0 \i crossings'\line
+}{\f2 \'ae}{\f0 \i   = crossings \\ }{\f2 \{ }{\f0 \i  cs: }{\f2 F}{\f0 \i  TrackContinuation }{\f2 | E}{\f0 \i  c: cs }{\f2 \'a5 }{\f0 \i c.location = centre?}{\f2  \}\line
+\'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InactiveBlockSection_RegisterRoute }{\f2 _____________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i entry?: Location\line
+}{\f2 \'ae}{\f0 \i exit?: Location\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i # }{\f2 \{ }{\f0 \i  t: tracks }{\f2 | }{\f0 \i entry? }{\f2 e}{\f0 \i  t.endpoints}{\f2  \}}{\f0 \i  = }{\f0 1\line
+}{\f2 \'ae}{\f0 \i # }{\f2 \{ }{\f0 \i  t: tracks }{\f2 | }{\f0 \i exit? }{\f2 e}{\f0 \i  t.endpoints}{\f2  \}}{\f0 \i  = }{\f0 1\line
+}{\f2 \'ae(}{\f0 \i entry?}{\f2 ,}{\f0 \i  exit?}{\f2 )}{\f0 \i  }{\f2 \'e4}{\f0 \i  }{\f0 ran}{\f0 \i  }{\f2 (}{\f0 dom}{\f0 \i  signals }{\f2 r}{\f0 \i  routeMatches}{\f2 )\line
+\'aeE}{\f0 \i  r: }{\f0 dom}{\f0 \i  }{\f2 (}{\f0 \i routeMatches }{\f2 t}{\f0 \i  }{\f2 \{(}{\f0 \i entry?}{\f2 ,}{\f0 \i  exit?}{\f2 )\})}{\f0 \i ; signals': Route }{\f2 \'a7}{\f0 \i  Signal\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i signals' = signals }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i r }{\f2 \'b8}{\f0 \i  SIGNAL_BLOCKED}{\f2 )\}\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  BlockSection_AvailableRoutesAreMaximalAndShouldBeEquipped'\line
+}{\f2 \'ae}{\f0 \i tracks' = tracks\line
+}{\f2 \'ae}{\f0 \i routeSettings' = routeSettings\line
+}{\f2 \'ae}{\f0 \i switches' = switches\line
+}{\f2 \'ae}{\f0 \i crossings' = crossings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InactiveBlockSection_UnregisterRoute }{\f2 ____________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i entry?: Location\line
+}{\f2 \'ae}{\f0 \i exit?: Location\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i # }{\f2 \{ }{\f0 \i  t: tracks }{\f2 | }{\f0 \i entry? }{\f2 e}{\f0 \i  t.endpoints}{\f2  \}}{\f0 \i  = }{\f0 1\line
+}{\f2 \'ae}{\f0 \i # }{\f2 \{ }{\f0 \i  t: tracks }{\f2 | }{\f0 \i exit? }{\f2 e}{\f0 \i  t.endpoints}{\f2  \}}{\f0 \i  = }{\f0 1\line
+}{\f2 \'aeE}{\f0 \i  r: }{\f0 dom}{\f0 \i  }{\f2 (}{\f0 dom}{\f0 \i  signals }{\f2 r}{\f0 \i  routeMatches }{\f2 t}{\f0 \i  }{\f2 \{(}{\f0 \i entry?}{\f2 ,}{\f0 \i  exit?}{\f2 )\})\line
+\'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i signals' = }{\f2 \{}{\f0 \i r}{\f2 \}}{\f0 \i  }{\f2 y}{\f0 \i  signals\line
+}{\f2 \'ae}{\f0 \i tracks' = tracks\line
+}{\f2 \'ae}{\f0 \i routeSettings' = routeSettings\line
+}{\f2 \'ae}{\f0 \i switches' = switches\line
+}{\f2 \'ae}{\f0 \i crossings' = crossings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i BlockSection_SetRoute}{\f2 ____________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i BlockSection\line
+}{\f2 \'ae}{\f0 \i entry?: Location\line
+}{\f2 \'ae}{\f0 \i exit?: Location\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 dom}{\f0 \i  switches' = }{\f0 dom}{\f0 \i  switches\line
+}{\f2 \'aeE}{\f0 \i  r: }{\f0 dom}{\f0 \i  }{\f2 (}{\f0 dom}{\f0 \i  signals }{\f2 r}{\f0 \i  routeMatches }{\f2 t}{\f0 \i  }{\f2 \{(}{\f0 \i entry?}{\f2 ,}{\f0 \i  exit?}{\f2 )\})\line
+\'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i r }{\f2 \'e4}{\f0 \i  routeSettings\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  r }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  signals\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  r2: routeSettings\line
+}{\f2 \'ae}{\f0 \i              }{\f2 \'a5 }{\f0 \i r.locationPath.vertices }{\f2 \fs18 I}{\f0 \i  r2.locationPath.vertices = }{\f2 0}{\f0 \i }{\f2 )\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  signals' = signals }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i r }{\f2 \'b8}{\f0 \i  SIGNAL_CLEARED}{\f2 )\}\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  routeSettings' = routeSettings }{\f2 \fs18 U}{\f0 \i  }{\f2 \{}{\f0 \i r}{\f2 \}\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  s: }{\f0 dom}{\f0 \i  switches\line
+}{\f2 \'ae}{\f0 \i              }{\f2 \'a5 (A}{\f0 \i  c: r.trackContinuations\line
+}{\f2 \'ae}{\f0 \i                     }{\f2 \'a5 ((}{\f0 \i c }{\f2 \'e4}{\f0 \i  s }{\f2 \'de}{\f0 \i  switches' s = switches s}{\f2 )\line
+\'ae}{\f0 \i                        }{\f2 \'a6}{\f0 \i  }{\f2 (}{\f0 \i c }{\f2 e}{\f0 \i  s }{\f2 \'de}{\f0 \i  switches' s = c}{\f2 ))))\line
+\'ae}{\f0 \i tracks' = tracks\line
+}{\f2 \'ae}{\f0 \i crossings' = crossings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i BlockSection_CancelRoute }{\f2 __________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i BlockSection\line
+}{\f2 \'ae}{\f0 \i entry?: Location\line
+}{\f2 \'ae}{\f0 \i exit?: Location\line
+}{\f2 \'c7_______________\line
+\'aeE}{\f0 \i  r: }{\f0 dom}{\f0 \i  }{\f2 (}{\f0 dom}{\f0 \i  signals }{\f2 r}{\f0 \i  routeMatches }{\f2 t}{\f0 \i  }{\f2 \{(}{\f0 \i entry?}{\f2 ,}{\f0 \i  exit?}{\f2 )\})\line
+\'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i r }{\f2 e}{\f0 \i  routeSettings\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  signals' = signals }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i r }{\f2 \'b8}{\f0 \i  SIGNAL_BLOCKED}{\f2 )\}\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  routeSettings' = routeSettings \\ }{\f2 \{}{\f0 \i r}{\f2 \}\line
+\'ae}{\f0 \i tracks' = tracks\line
+}{\f2 \'ae}{\f0 \i switches' = switches\line
+}{\f2 \'ae}{\f0 \i crossings' = crossings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i BlockSection_CancelAllRoutes }{\f2 ________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i BlockSection\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 dom}{\f0 \i  signals' = }{\f0 dom}{\f0 \i  signals\line
+}{\f2 \'aeA}{\f0 \i  r: }{\f0 dom}{\f0 \i  signals }{\f2 \'a5 }{\f0 \i signals' r = SIGNAL_BLOCKED\line
+}{\f2 \'ae}{\f0 \i routeSettings' = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i tracks' = tracks\line
+}{\f2 \'ae}{\f0 \i switches' = switches\line
+}{\f2 \'ae}{\f0 \i crossings' = crossings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f0 \i DoorState}{\f0  ::}{\f2 = }{\f0 \i DOOR_OPEN }{\f2 | }{\f0 \i DOOR_CLOSED
+}\line
+\par {\f0 [}{\f0 \i HeadCode}{\f0 ]
+}\line
+\par {\f0 [}{\f0 \i String}{\f0 ]
+}\line
+\par {\f2 \'c8_}{\f0 \i Train}{\f2 ____________________________________\line
+\'ae}{\f0 \i model: TrainModel\line
+}{\f2 \'ae}{\f0 \i length: }{\f2 N}{\f0 \i }{\f0 \sub 1}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i currentTrack: TrainTrack\line
+}{\f2 \'ae}{\f0 \i distanceIntoTrack: }{\f2 N}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i occupiedTracks: }{\f0 iseq}{\f0 \i  TrainTrack\line
+}{\f2 \'ae}{\f0 \i speed: }{\f2 N}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i direction: Location\line
+}{\f2 \'ae}{\f0 \i leftDoors: DoorState\line
+}{\f2 \'ae}{\f0 \i rightDoors: DoorState\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i direction }{\f2 e}{\f0 \i  currentTrack.endpoints\line
+}{\f2 \'ae}{\f0 \i currentTrack = head occupiedTracks\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i Platform }{\f2 __________________________________\line
+\'ae}{\f0 \i block: BlockSection\line
+}{\f2 \'ae}{\f0 \i doors: DoorState\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i block.switches = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i block.crossings = }{\f2 0}{\f0 \i \line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'ae}{\f0 \i trackOccupancy: TrainTrack }{\f2 x}{\f0 \i  }{\f2 F}{\f0 \i  Train }{\f2 f}{\f0 \i  }{\f2 F}{\f0 \i  Train\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  track: TrainTrack; trains: }{\f2 F}{\f0 \i  Train\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i trackOccupancy }{\f2 (}{\f0 \i track}{\f2 ,}{\f0 \i  trains}{\f2 )\line
+\'ae}{\f0 \i         = }{\f2 \{ }{\f0 \i  t: trains }{\f2 | }{\f0 \i track }{\f2 e}{\f0 \i  }{\f0 ran}{\f0 \i  t.occupiedTracks}{\f2  \}\line
+
+}
+\par {\f0 \i BarrierState}{\f0  ::}{\f2 = }{\f0 \i BARRIER_RAISED }{\f2 | }{\f0 \i BARRIER_LOWERED
+}\line
+\par {\f2 \'c8_}{\f0 \i TrainControlSystem }{\f2 _____________________________\line
+\'ae}{\f0 \i activeBlocks: }{\f2 N}{\f0 \i  }{\f2 \'a9}{\f0 \i  BlockSection\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks: }{\f2 N}{\f0 \i  }{\f2 \'a9}{\f0 \i  InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i levelCrossings: }{\f2 F}{\f0 \i  }{\f2 N}{\f0 \i  }{\f2 \'a7}{\f0 \i  BarrierState\line
+}{\f2 \'ae}{\f0 \i stations: String }{\f2 \'a9}{\f0 \i  }{\f0 iseq}{\f0 \i  Platform\line
+}{\f2 \'ae}{\f0 \i lines: String }{\f2 \'a9}{\f0 \i  }{\f0 iseq}{\f0 \i  String\line
+}{\f2 \'ae}{\f0 \i trains: HeadCode }{\f2 \'a9}{\f0 \i  Train\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 ran}{\f0 \i  lines = }{\f0 iseq}{\f0 \i  }{\f2 (}{\f0 dom}{\f0 \i  stations}{\f2 )\line
+\'ae}{\f0 \i }{\f2 U}{\f0 \i  }{\f2 (}{\f0 dom}{\f0 \i  levelCrossings}{\f2 )}{\f0 \i  }{\f2 z}{\f0 \i  }{\f0 dom}{\f0 \i  activeBlocks }{\f2 \fs18 U}{\f0 \i  }{\f0 dom}{\f0 \i  inactiveBlocks\line
+}{\f2 \'aeA}{\f0 \i  s: }{\f0 ran}{\f0 \i  stations\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 A}{\f0 \i  platform: }{\f0 ran}{\f0 \i  s\line
+}{\f2 \'ae}{\f0 \i           }{\f2 \'a5 }{\f0 \i platform.block }{\f2 e}{\f0 \i  }{\f0 ran}{\f0 \i  activeBlocks }{\f2 \fs18 U}{\f0 \i  }{\f0 ran}{\f0 \i  inactiveBlocks\line
+}{\f2 \'aeA}{\f0 \i  l: }{\f0 ran}{\f0 \i  lines }{\f2 \'a5 }{\f0 ran}{\f0 \i  l }{\f2 z}{\f0 \i  }{\f0 dom}{\f0 \i  stations\line
+}{\f2 \'aeA}{\f0 \i  train: }{\f0 ran}{\f0 \i  trains\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 ran}{\f0 \i  train.occupiedTracks\line
+}{\f2 \'ae}{\f0 \i         }{\f2 z}{\f0 \i  }{\f2 \{ }{\f0 \i  t: TrainTrack }{\f2 | E}{\f0 \i  b: }{\f0 ran}{\f0 \i  activeBlocks }{\f2 \'a5 }{\f0 \i t }{\f2 e}{\f0 \i  b.tracks}{\f2  \}\line
+\'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InstallNewBlockSection }{\f2 ___________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i blockSectionID!: }{\f2 N}{\f0 \i \line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i blockSectionID! = # activeBlocks + # inactiveBlocks + }{\f0 1\line
+}{\f2 \'aeE}{\f0 \i  InactiveBlockSection_Init\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i inactiveBlocks'\line
+}{\f2 \'ae}{\f0 \i         = inactiveBlocks }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i blockSectionID! }{\f2 \'b8}{\f0 \i  }{\f1 q}{\f0 \i  InactiveBlockSection}{\f2 )\}\line
+\'ae}{\f0 \i activeBlocks' = activeBlocks\line
+}{\f2 \'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'ae}{\f0 \i trains' = trains\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i InstallNewLevelCrossing_NotInitialised }{\f2 ___________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i blockSectionIDs?: }{\f2 F}{\f0 \i  }{\f2 N}{\f0 \i \line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i blockSectionIDs? }{\f2 \'eb}{\f0 \i  }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i blockSectionIDs? }{\f2 z}{\f0 \i  }{\f0 dom}{\f0 \i  activeBlocks }{\f2 \fs18 U}{\f0 \i  }{\f0 dom}{\f0 \i  inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i blockSectionIDs? }{\f2 \'e4}{\f0 \i  }{\f0 dom}{\f0 \i  levelCrossings\line
+}{\f2 \'ae}{\f0 \i activeBlocks' = activeBlocks\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks' = inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i levelCrossings' = levelCrossings }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i blockSectionIDs? }{\f2 \'b8}{\f0 \i  BARRIER_LOWERED}{\f2 )\}\line
+\'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'ae}{\f0 \i trains' = trains\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i Update_LevelCrossings}{\f2 ____________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 dom}{\f0 \i  levelCrossings' = }{\f0 dom}{\f0 \i  levelCrossings\line
+}{\f2 \'aeA}{\f0 \i  ids: }{\f0 dom}{\f0 \i  levelCrossings\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 (}{\f0 \i ids }{\f2 z}{\f0 \i  }{\f0 dom}{\f0 \i  activeBlocks\line
+}{\f2 \'ae}{\f0 \i        }{\f2 \'de}{\f0 \i  }{\f2 ((E}{\f0 \i  i: ids }{\f2 \'a5 (}{\f0 \i activeBlocks i}{\f2 )}{\f0 \i .routeSettings }{\f2 \'eb}{\f0 \i  }{\f2 0}{\f0 \i }{\f2 )\line
+\'ae}{\f0 \i           }{\f2 \'de}{\f0 \i  levelCrossings' ids = BARRIER_LOWERED}{\f2 )\line
+\'ae}{\f0 \i          }{\f2 \'a6}{\f0 \i  }{\f2 ((A}{\f0 \i  i: ids }{\f2 \'a5 (}{\f0 \i activeBlocks i}{\f2 )}{\f0 \i .routeSettings = }{\f2 0}{\f0 \i }{\f2 )\line
+\'ae}{\f0 \i             }{\f2 \'de}{\f0 \i  levelCrossings' ids = BARRIER_RAISED}{\f2 ))\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (}{\f0 \i ids }{\f2 \fs18 I}{\f0 \i  }{\f0 dom}{\f0 \i  inactiveBlocks }{\f2 \'eb}{\f0 \i  }{\f2 0}{\f0 \i  }{\f2 \'de}{\f0 \i  levelCrossings' ids = BARRIER_LOWERED}{\f2 )\line
+\'ae}{\f0 \i activeBlocks' = activeBlocks\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks' = inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'ae}{\f0 \i trains' = trains\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f0 \i InstallNewLevelCrossing}{\f2  \'ea\line
+}{\f0 \i   InstallNewLevelCrossing_NotInitialised }{\f2 ;}{\f0 \i  Update_LevelCrossings
+}\line
+\par {\f2 \'c8_}{\f0 \i Update_InactiveBlockSection}{\f2 _________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i }{\f1 D}{\f0 \i InactiveBlockSection\line
+}{\f2 \'ae}{\f0 \i blockSectionID?: }{\f2 N}{\f0 \i \line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i blockSectionID? }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i }{\f1 q}{\f0 \i  InactiveBlockSection = inactiveBlocks blockSectionID?\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks'\line
+}{\f2 \'ae}{\f0 \i   = inactiveBlocks }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i blockSectionID? }{\f2 \'b8}{\f0 \i  }{\f1 q}{\f0 \i  InactiveBlockSection'}{\f2 )\}\line
+\'ae}{\f0 \i activeBlocks' = activeBlocks\line
+}{\f2 \'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'ae}{\f0 \i trains' = trains\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i Update_ActiveBlockSection}{\f2 __________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i }{\f1 D}{\f0 \i BlockSection\line
+}{\f2 \'ae}{\f0 \i blockSectionID?: }{\f2 N}{\f0 \i \line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i blockSectionID? }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  activeBlocks\line
+}{\f2 \'ae}{\f0 \i }{\f1 q}{\f0 \i  BlockSection = activeBlocks blockSectionID?\line
+}{\f2 \'ae}{\f0 \i activeBlocks' = activeBlocks }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i blockSectionID? }{\f2 \'b8}{\f0 \i  }{\f1 q}{\f0 \i  BlockSection'}{\f2 )\}\line
+\'ae}{\f0 \i inactiveBlocks' = inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'ae}{\f0 \i trains' = trains\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f0 \i InstallTrack_Unchecked}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i InactiveBlockSection\line
+      }{\f2 \'a5 }{\f0 \i InactiveBlockSection_InstallTrack }{\f2 \'a6}{\f0 \i  Update_InactiveBlockSection
+}\line
+\par {\f2 \'c8_}{\f0 \i InstallTrack }{\f2 ________________________________\line
+\'ae}{\f0 \i InstallTrack_Unchecked\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i }{\f2 !}{\f0 \i  }{\f2 (E}{\f0 \i  b: }{\f0 ran}{\f0 \i  activeBlocks }{\f2 \fs18 U}{\f0 \i  }{\f0 ran}{\f0 \i  inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i        }{\f2 \'a5 (E}{\f0 \i  t: b.tracks }{\f2 \'a5 }{\f0 \i t.endpoints = }{\f2 \{}{\f0 \i to?}{\f2 ,}{\f0 \i  from?}{\f2 \}))\line
+\'aeA}{\f0 \i  b: }{\f0 ran}{\f0 \i  activeBlocks }{\f2 \fs18 U}{\f0 \i  }{\f0 ran}{\f0 \i  inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 (E}{\f0 \i  t: b.tracks }{\f2 \'a5 }{\f0 \i t.endpoints }{\f2 \fs18 I}{\f0 \i  }{\f2 \{}{\f0 \i to?}{\f2 ,}{\f0 \i  from?}{\f2 \}}{\f0 \i  }{\f2 \'eb}{\f0 \i  }{\f2 0}{\f0 \i }{\f2 )\line
+\'ae}{\f0 \i       }{\f2 \'de}{\f0 \i  inactiveBlocks blockSectionID? = b\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f0 \i RemoveTrack}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i InactiveBlockSection\line
+      }{\f2 \'a5 }{\f0 \i InactiveBlockSection_RemoveTrack }{\f2 \'a6}{\f0 \i  Update_InactiveBlockSection
+}\line
+\par {\f0 \i RegisterSwitch}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i InactiveBlockSection\line
+      }{\f2 \'a5 }{\f0 \i InactiveBlockSection_RegisterSwitch }{\f2 \'a6}{\f0 \i  Update_InactiveBlockSection
+}\line
+\par {\f0 \i RegisterCrossing}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i InactiveBlockSection\line
+      }{\f2 \'a5 }{\f0 \i InactiveBlockSection_RegisterCrossing }{\f2 \'a6}{\f0 \i  Update_InactiveBlockSection
+}\line
+\par {\f0 \i UnregisterJunction}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i InactiveBlockSection\line
+      }{\f2 \'a5 }{\f0 \i InactiveBlockSection_UnregisterJunction }{\f2 \'a6}{\f0 \i  Update_InactiveBlockSection
+}\line
+\par {\f0 \i RegisterRoute}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i InactiveBlockSection\line
+      }{\f2 \'a5 }{\f0 \i InactiveBlockSection_RegisterRoute }{\f2 \'a6}{\f0 \i  Update_InactiveBlockSection
+}\line
+\par {\f0 \i UnregisterRoute}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i InactiveBlockSection\line
+      }{\f2 \'a5 }{\f0 \i InactiveBlockSection_UnregisterRoute }{\f2 \'a6}{\f0 \i  Update_InactiveBlockSection
+}\line
+\par {\f0 \i SetRoute_Unchecked_WithoutLevelCrossing}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i BlockSection }{\f2 \'a5 }{\f0 \i BlockSection_SetRoute }{\f2 \'a6}{\f0 \i  Update_ActiveBlockSection
+}\line
+\par {\f0 \i SetRoute_Unchecked}{\f2  \'ea\line
+}{\f0 \i   SetRoute_Unchecked_WithoutLevelCrossing }{\f2 ;}{\f0 \i  Update_LevelCrossings
+}\line
+\par {\f0 \i CancelRoute_Unchecked_WithoutLevelCrossing}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i BlockSection }{\f2 \'a5 }{\f0 \i BlockSection_CancelRoute }{\f2 \'a6}{\f0 \i  Update_ActiveBlockSection
+}\line
+\par {\f0 \i CancelRoute_Unchecked}{\f2  \'ea\line
+}{\f0 \i   CancelRoute_Unchecked_WithoutLevelCrossing }{\f2 ;}{\f0 \i  Update_LevelCrossings
+}\line
+\par {\f2 \'c8_}{\f0 \i CancelRoute}{\f2 _________________________________\line
+\'ae}{\f0 \i CancelRoute_Unchecked\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  r: }{\f0 dom}{\f0 \i  }{\f2 (}{\f0 dom}{\f0 \i  }{\f2 (}{\f0 \i activeBlocks blockSectionID?}{\f2 )}{\f0 \i .signals }{\f2 r}{\f0 \i  routeMatches\line
+}{\f2 \'ae}{\f0 \i           }{\f2 t}{\f0 \i  }{\f2 \{(}{\f0 \i entry?}{\f2 ,}{\f0 \i  exit?}{\f2 )\})\line
+\'ae}{\f0 \i     }{\f2 \'a5 A}{\f0 \i  t: }{\f0 ran}{\f0 \i  r.trackContinuationPath.vertices\line
+}{\f2 \'ae}{\f0 \i           }{\f2 \'a5 }{\f0 \i trackOccupancy }{\f2 (}{\f0 \i t}{\f2 ,}{\f0 \i  }{\f2 (}{\f0 ran}{\f0 \i  trains}{\f2 ))}{\f0 \i  = }{\f2 0}{\f0 \i \line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f0 \i CancelAllRoutesForBlock_Unchecked_WithoutLevelCrossing}{\f2  \'ea\line
+}{\f0 \i   }{\f2 E}{\f0 \i  }{\f1 D}{\f0 \i BlockSection }{\f2 \'a5 }{\f0 \i BlockSection_CancelAllRoutes }{\f2 \'a6}{\f0 \i  Update_ActiveBlockSection
+}\line
+\par {\f0 \i CancelAllRoutesForBlock_Unchecked}{\f2  \'ea\line
+}{\f0 \i   CancelAllRoutesForBlock_Unchecked_WithoutLevelCrossing\line
+  }{\f2 ;}{\f0 \i  Update_LevelCrossings
+}\line
+\par {\f2 \'c8_}{\f0 \i CancelAllRoutesForBlock}{\f2 ___________________________\line
+\'ae}{\f0 \i CancelAllRoutesForBlock_Unchecked\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  r: }{\f0 dom}{\f0 \i  }{\f2 (}{\f0 dom}{\f0 \i  }{\f2 (}{\f0 \i activeBlocks blockSectionID?}{\f2 )}{\f0 \i .signals }{\f2 r}{\f0 \i  routeMatches}{\f2 )\line
+\'ae}{\f0 \i     }{\f2 \'a5 A}{\f0 \i  t: }{\f0 ran}{\f0 \i  r.trackContinuationPath.vertices\line
+}{\f2 \'ae}{\f0 \i           }{\f2 \'a5 }{\f0 \i trackOccupancy }{\f2 (}{\f0 \i t}{\f2 ,}{\f0 \i  }{\f2 (}{\f0 ran}{\f0 \i  trains}{\f2 ))}{\f0 \i  = }{\f2 0}{\f0 \i \line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i ActivateBlockSection }{\f2 ____________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i blockSectionID?: }{\f2 N}{\f0 \i \line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i blockSectionID? }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks blockSectionID? }{\f2 e}{\f0 \i  BlockSection\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks' = }{\f2 \{}{\f0 \i blockSectionID?}{\f2 \}}{\f0 \i  }{\f2 y}{\f0 \i  inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i activeBlocks'\line
+}{\f2 \'ae}{\f0 \i   = activeBlocks }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i blockSectionID? }{\f2 \'b8}{\f0 \i  inactiveBlocks blockSectionID?}{\f2 )\}\line
+\'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'ae}{\f0 \i trains' = trains\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i DeactivateBlockSection_NotCleared}{\f2 ______________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i blockSectionID?: }{\f2 N}{\f0 \i \line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i blockSectionID? }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  activeBlocks\line
+}{\f2 \'ae}{\f0 \i activeBlocks' = }{\f2 \{}{\f0 \i blockSectionID?}{\f2 \}}{\f0 \i  }{\f2 y}{\f0 \i  activeBlocks\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks'\line
+}{\f2 \'ae}{\f0 \i   = inactiveBlocks }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i blockSectionID? }{\f2 \'b8}{\f0 \i  activeBlocks blockSectionID?}{\f2 )\}\line
+\'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'ae}{\f0 \i trains' = trains\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f0 \i DeactivateBlockSection}{\f2  \'ea\line
+}{\f0 \i   CancelAllRoutesForBlock }{\f2 ;}{\f0 \i  DeactivateBlockSection_NotCleared
+}\line
+\par {\f2 \'c8_}{\f0 \i BuildNewStation}{\f2 _______________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i name?: String\line
+}{\f2 \'ae}{\f0 \i platforms?: }{\f0 iseq}{\f0 \i  }{\f2 N}{\f0 \i \line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i platforms? }{\f2 \'eb}{\f0 \i  }{\f2 \'e3\'f1\line
+\'ae}{\f0 \i name? }{\f2 \'e4}{\f0 \i  }{\f0 dom}{\f0 \i  stations\line
+}{\f2 \'ae}{\f0 \i stations'\line
+}{\f2 \'ae}{\f0 \i   = stations\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i name?\line
+}{\f2 \'ae}{\f0 \i         }{\f2 \'b8}{\f0 \i  }{\f2 \{ }{\f0 \i  p: }{\f2 N}{\f0 \i  }{\f2 x}{\f0 \i  Platform\line
+}{\f2 \'ae}{\f0 \i                }{\f2 | }{\f0 \i first p }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  platforms?\line
+}{\f2 \'ae}{\f0 \i                  }{\f2 \'a6}{\f0 \i  }{\f2 (}{\f0 \i second p}{\f2 )}{\f0 \i .block\line
+}{\f2 \'ae}{\f0 \i                      = }{\f2 (}{\f0 \i activeBlocks\line
+}{\f2 \'ae}{\f0 \i                         }{\f2 \fs18 U}{\f0 \i  inactiveBlocks}{\f2 )}{\f0 \i  }{\f2 (}{\f0 \i platforms? }{\f2 (}{\f0 \i first p}{\f2 )) \})\}\line
+\'ae}{\f0 \i activeBlocks' = activeBlocks\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks' = inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'ae}{\f0 \i trains' = trains\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i RegisterNewLine}{\f2 _______________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i name?: String\line
+}{\f2 \'ae}{\f0 \i stations?: }{\f0 iseq}{\f0 \i  String\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i stations? }{\f2 \'eb}{\f0 \i  }{\f2 \'e3\'f1\line
+\'ae}{\f0 \i name? }{\f2 \'e4}{\f0 \i  }{\f0 dom}{\f0 \i  lines\line
+}{\f2 \'ae}{\f0 \i lines' = lines }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i name? }{\f2 \'b8}{\f0 \i  stations?}{\f2 )\}\line
+\'ae}{\f0 \i activeBlocks' = activeBlocks\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks' = inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i trains' = trains\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i IntroduceNewTrain}{\f2 ______________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i headcode?: HeadCode\line
+}{\f2 \'ae}{\f0 \i model?: TrainModel\line
+}{\f2 \'ae}{\f0 \i length?: }{\f2 N}{\f0 \i }{\f0 \sub 1}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i trackFront?: Location\line
+}{\f2 \'ae}{\f0 \i trackRear?: Location\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i headcode? }{\f2 \'e4}{\f0 \i  }{\f0 dom}{\f0 \i  trains\line
+}{\f2 \'aeE}{\f0 \i  t: Train; b: }{\f0 ran}{\f0 \i  activeBlocks\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 E}{\f0 \i  route: b.routeSettings\line
+}{\f2 \'ae}{\f0 \i           }{\f2 \'a5 E}{\f0 \i  track: }{\f0 ran}{\f0 \i  route.trackContinuationPath.vertices\line
+}{\f2 \'ae}{\f0 \i                 }{\f2 \'a5 }{\f0 \i track.endpoints = }{\f2 \{}{\f0 \i trackFront?}{\f2 ,}{\f0 \i  trackRear?}{\f2 \}\line
+\'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  track.length }{\f2 \'f9}{\f0 \i  length?\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  model? }{\f2 e}{\f0 \i  track.compatibility\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  t.model = model?\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  t.length = length?\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  t.currentTrack = track\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  t.distanceIntoTrack = track.length\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  t.occupiedTracks = }{\f2 \'e3}{\f0 \i track}{\f2 \'f1\line
+\'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  t.speed = }{\f0 0\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  t.direction = trackFront?\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  t.leftDoors = DOOR_CLOSED\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  t.rightDoors = DOOR_CLOSED\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  trains' = trains }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i headcode? }{\f2 \'b8}{\f0 \i  t}{\f2 )\}\line
+\'ae}{\f0 \i activeBlocks' = activeBlocks\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks' = inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'ae}{\f0 \i getSignalsAtLocation: }{\f2 F}{\f0 \i  BlockSection }{\f2 x}{\f0 \i  TrainTrack }{\f2 x}{\f0 \i  Location }{\f2 f}{\f0 \i  }{\f2 F}{\f0 \i  Signal\line
+}{\f2 \'c7_______________\line
+\'aeA}{\f0 \i  bs: }{\f2 F}{\f0 \i  BlockSection; t: TrainTrack; l: Location\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i getSignalsAtLocation }{\f2 (}{\f0 \i bs}{\f2 ,}{\f0 \i  t}{\f2 ,}{\f0 \i  l}{\f2 )\line
+\'ae}{\f0 \i         = }{\f2 \{ }{\f0 \i  s: Signal\line
+}{\f2 \'ae}{\f0 \i                }{\f2 | E}{\f0 \i  b: bs\line
+}{\f2 \'ae}{\f0 \i                      }{\f2 \'a5 E}{\f0 \i  r: }{\f0 dom}{\f0 \i  b.signals\line
+}{\f2 \'ae}{\f0 \i                            }{\f2 \'a5 }{\f0 \i head r.locationPath.vertices = l\line
+}{\f2 \'ae}{\f0 \i                              }{\f2 \'a6}{\f0 \i  head r.trackContinuationPath.vertices }{\f2 \'eb}{\f0 \i  t\line
+}{\f2 \'ae}{\f0 \i                              }{\f2 \'a6}{\f0 \i  b.signals r = s}{\f2  \}\line
+
+}
+\par {\f2 \'c8_}{\f0 \i RefreshAutoTrainOperation}{\f2 __________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 dom}{\f0 \i  trains' = }{\f0 dom}{\f0 \i  trains\line
+}{\f2 \'aeA}{\f0 \i  h: }{\f0 dom}{\f0 \i  trains\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 E}{\f0 \i  t1, t2: Train\line
+}{\f2 \'ae}{\f0 \i           }{\f2 \'a5 }{\f0 \i t1 = trains h\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2 = trains' h\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2.model = t1.model\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2.length = t1.length\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2.currentTrack = t1.currentTrack\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2.distanceIntoTrack = t1.distanceIntoTrack\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2.occupiedTracks = t1.occupiedTracks\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2.direction = t1.direction\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2.leftDoors = DOOR_CLOSED\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  t2.rightDoors = DOOR_CLOSED\line
+}{\f2 \'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  }{\f2 (}{\f0 \i getSignalsAtLocation }{\f2 ((}{\f0 ran}{\f0 \i  activeBlocks}{\f2 ),}{\f0 \i  t1.currentTrack}{\f2 ,\line
+\'ae}{\f0 \i                                      t1.direction}{\f2 )}{\f0 \i  = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i                }{\f2 \'de}{\f0 \i  t2.speed = t1.currentTrack.maxSpeed}{\f2 )\line
+\'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  }{\f2 (E}{\f0 \i  s: getSignalsAtLocation }{\f2 ((}{\f0 ran}{\f0 \i  activeBlocks}{\f2 ),}{\f0 \i  t1.currentTrack}{\f2 ,\line
+\'ae}{\f0 \i                                           t1.direction}{\f2 )\line
+\'ae}{\f0 \i                    }{\f2 \'a5 (}{\f0 \i s = SIGNAL_CLEARED\line
+}{\f2 \'ae}{\f0 \i                       }{\f2 \'de}{\f0 \i  t2.speed = t1.currentTrack.maxSpeed}{\f2 ))\line
+\'ae}{\f0 \i             }{\f2 \'a6}{\f0 \i  }{\f2 (}{\f0 \i getSignalsAtLocation }{\f2 ((}{\f0 ran}{\f0 \i  activeBlocks}{\f2 ),}{\f0 \i  t1.currentTrack}{\f2 ,\line
+\'ae}{\f0 \i                                      t1.direction}{\f2 )}{\f0 \i  }{\f2 \'eb}{\f0 \i  }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i                }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  s: getSignalsAtLocation }{\f2 ((}{\f0 ran}{\f0 \i  activeBlocks}{\f2 ),\line
+\'ae}{\f0 \i                                              t1.currentTrack}{\f2 ,}{\f0 \i  t1.direction}{\f2 )\line
+\'ae}{\f0 \i                       }{\f2 \'a5 }{\f0 \i s = SIGNAL_BLOCKED}{\f2 )\line
+\'ae}{\f0 \i                }{\f2 \'de}{\f0 \i  t2.speed = }{\f0 0}{\f2 )\line
+\'ae}{\f0 \i activeBlocks' = activeBlocks\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks' = inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f0 \i DisplayedTrackState}{\f0  ::}{\f2 = }{\f0 \i TRACK_OCCUPIED }{\f2 | }{\f0 \i TRACK_SET }{\f2 | }{\f0 \i TRACK_UNSET
+}\line
+\par {\f2 \'c8_}{\f0 \i MimicPanel_DisplayTracks }{\f2 __________________________\line
+\'ae}{\f0 \i }{\f1 X}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i tracks!: }{\f2 F}{\f0 \i  }{\f2 (}{\f0 \i Location }{\f2 x}{\f0 \i  Location }{\f2 x}{\f0 \i  DisplayedTrackState }{\f2 x}{\f0 \i  }{\f2 N}{\f0 \i }{\f2 )\line
+\'c7_______________\line
+\'aeA}{\f0 \i  l1, l2: Location; d: DisplayedTrackState; n: }{\f2 N}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 (}{\f0 \i l1}{\f2 ,}{\f0 \i  l2}{\f2 ,}{\f0 \i  d}{\f2 ,}{\f0 \i  n}{\f2 )}{\f0 \i  }{\f2 e}{\f0 \i  tracks!\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'db}{\f0 \i  n }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  activeBlocks }{\f2 \fs18 U}{\f0 \i  }{\f0 dom}{\f0 \i  inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i         }{\f2 \'a6}{\f0 \i  }{\f2 (E}{\f0 \i  b: BlockSection\line
+}{\f2 \'ae}{\f0 \i                }{\f2 \'a5 (}{\f0 \i b = }{\f2 (}{\f0 \i activeBlocks }{\f2 \fs18 U}{\f0 \i  inactiveBlocks}{\f2 )}{\f0 \i  n\line
+}{\f2 \'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  }{\f2 (E}{\f0 \i  t: b.tracks\line
+}{\f2 \'ae}{\f0 \i                          }{\f2 \'a5 (}{\f0 \i t.endpoints = }{\f2 \{}{\f0 \i l1}{\f2 ,}{\f0 \i  l2}{\f2 \}\line
+\'ae}{\f0 \i                             }{\f2 \'a6}{\f0 \i  }{\f2 (}{\f0 \i trackOccupancy }{\f2 (}{\f0 \i t}{\f2 ,}{\f0 \i  }{\f2 (}{\f0 ran}{\f0 \i  trains}{\f2 ))}{\f0 \i  }{\f2 \'eb}{\f0 \i  }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i                                }{\f2 \'de}{\f0 \i  d = TRACK_OCCUPIED}{\f2 )\line
+\'ae}{\f0 \i                             }{\f2 \'a6}{\f0 \i  }{\f2 (}{\f0 \i trackOccupancy }{\f2 (}{\f0 \i t}{\f2 ,}{\f0 \i  }{\f2 (}{\f0 ran}{\f0 \i  trains}{\f2 ))}{\f0 \i  = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i                                }{\f2 \'a6}{\f0 \i  }{\f2 (E}{\f0 \i  r: b.routeSettings\line
+}{\f2 \'ae}{\f0 \i                                       }{\f2 \'a5 }{\f0 \i t\line
+}{\f2 \'ae}{\f0 \i                                           }{\f2 e}{\f0 \i  }{\f0 ran}{\f0 \i  r.trackContinuationPath.vertices}{\f2 )\line
+\'ae}{\f0 \i                                }{\f2 \'de}{\f0 \i  d = TRACK_SET}{\f2 )\line
+\'ae}{\f0 \i                             }{\f2 \'a6}{\f0 \i  }{\f2 (}{\f0 \i trackOccupancy }{\f2 (}{\f0 \i t}{\f2 ,}{\f0 \i  }{\f2 (}{\f0 ran}{\f0 \i  trains}{\f2 ))}{\f0 \i  = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i                                }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  r: b.routeSettings\line
+}{\f2 \'ae}{\f0 \i                                       }{\f2 \'a5 }{\f0 \i t\line
+}{\f2 \'ae}{\f0 \i                                           }{\f2 \'e4}{\f0 \i  }{\f0 ran}{\f0 \i  r.trackContinuationPath.vertices}{\f2 )\line
+\'ae}{\f0 \i                                }{\f2 \'de}{\f0 \i  d = TRACK_UNSET}{\f2 )))))\line
+\'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i MimicPanel_DisplaySignals}{\f2 __________________________\line
+\'ae}{\f0 \i }{\f1 X}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i signals!: }{\f2 F}{\f0 \i  }{\f2 (}{\f0 \i Location }{\f2 x}{\f0 \i  Location }{\f2 x}{\f0 \i  Signal}{\f2 )\line
+\'c7_______________\line
+\'aeA}{\f0 \i  l1, l2: Location; s: Signal\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 (}{\f0 \i l1}{\f2 ,}{\f0 \i  l2}{\f2 ,}{\f0 \i  s}{\f2 )}{\f0 \i  }{\f2 e}{\f0 \i  signals!\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'db}{\f0 \i  }{\f2 (E}{\f0 \i  b: }{\f0 ran}{\f0 \i  activeBlocks }{\f2 \fs18 U}{\f0 \i  }{\f0 ran}{\f0 \i  inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i              }{\f2 \'a5 (E}{\f0 \i  r: }{\f0 dom}{\f0 \i  }{\f2 (}{\f0 dom}{\f0 \i  b.signals }{\f2 r}{\f0 \i  routeMatches }{\f2 t}{\f0 \i  }{\f2 \{(}{\f0 \i l1}{\f2 ,}{\f0 \i  l2}{\f2 )\})\line
+\'ae}{\f0 \i                     }{\f2 \'a5 }{\f0 \i s = b.signals r}{\f2 ))\line
+\'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i MimicPanel_DisplayStations }{\f2 _________________________\line
+\'ae}{\f0 \i }{\f1 X}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i stations!: }{\f2 F}{\f0 \i  }{\f2 (}{\f0 \i String }{\f2 x}{\f0 \i  }{\f0 iseq}{\f0 \i  }{\f2 N}{\f0 \i }{\f2 )\line
+\'c7_______________\line
+\'aeA}{\f0 \i  s: String; p: }{\f0 iseq}{\f0 \i  }{\f2 N}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 (}{\f0 \i s}{\f2 ,}{\f0 \i  p}{\f2 )}{\f0 \i  }{\f2 e}{\f0 \i  stations!\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'db}{\f0 \i  s }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  stations\line
+}{\f2 \'ae}{\f0 \i         }{\f2 \'a6}{\f0 \i  # p = # }{\f2 (}{\f0 \i stations s}{\f2 )\line
+\'ae}{\f0 \i         }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  i: }{\f0 dom}{\f0 \i  p\line
+}{\f2 \'ae}{\f0 \i                }{\f2 \'a5 (}{\f0 \i p i }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  }{\f2 (}{\f0 \i activeBlocks }{\f2 \fs18 U}{\f0 \i  inactiveBlocks}{\f2 )\line
+\'ae}{\f0 \i                   }{\f2 \'a6}{\f0 \i  }{\f2 (}{\f0 \i activeBlocks }{\f2 \fs18 U}{\f0 \i  inactiveBlocks}{\f2 )}{\f0 \i  }{\f2 (}{\f0 \i p i}{\f2 )\line
+\'ae}{\f0 \i                       = }{\f2 (}{\f0 \i stations s i}{\f2 )}{\f0 \i .block}{\f2 ))\line
+\'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i MimicPanel_DisplayLevelCrossings }{\f2 ______________________\line
+\'ae}{\f0 \i }{\f1 X}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i levelCrossings!: }{\f2 F}{\f0 \i  }{\f2 (}{\f0 \i }{\f2 F}{\f0 \i  }{\f2 N}{\f0 \i  }{\f2 x}{\f0 \i  BarrierState}{\f2 )\line
+\'c7_______________\line
+\'ae}{\f0 \i levelCrossings! = levelCrossings\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f0 \i DisplayMimicPanel}{\f2  \'ea\line
+}{\f0 \i   MimicPanel_DisplayTracks\line
+  }{\f2 \'a6}{\f0 \i  MimicPanel_DisplaySignals\line
+  }{\f2 \'a6}{\f0 \i  MimicPanel_DisplayStations\line
+  }{\f2 \'a6}{\f0 \i  MimicPanel_DisplayLevelCrossings
+}\line
+\par {\f2 \'c8_}{\f0 \i ReportTrainLocation}{\f2 _____________________________\line
+\'ae}{\f0 \i }{\f1 D}{\f0 \i TrainControlSystem\line
+}{\f2 \'ae}{\f0 \i headcode?: HeadCode\line
+}{\f2 \'ae}{\f0 \i occupiedTracks?: }{\f0 iseq}{\f0 \i  }{\f2 (}{\f0 \i Location }{\f2 x}{\f0 \i  Location}{\f2 )\line
+\'ae}{\f0 \i distanceIntoTrack?: }{\f2 N}{\f0 \i \line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i headcode? }{\f2 e}{\f0 \i  }{\f0 dom}{\f0 \i  trains\line
+}{\f2 \'aeE}{\f0 \i  t1, t2: Train\line
+}{\f2 \'ae}{\f0 \i     }{\f2 \'a5 }{\f0 \i t1 = trains headcode?\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t2.model = t1.model\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t2.length = t1.length\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t2.distanceIntoTrack = distanceIntoTrack?\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t2.speed = t1.speed\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t2.direction = t1.direction\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t2.leftDoors = t1.leftDoors\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t2.rightDoors = t1.rightDoors\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  t2.currentTrack = head t2.occupiedTracks\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f0 dom}{\f0 \i  t2.occupiedTracks = }{\f0 1}{\f0 \i  .. # occupiedTracks?\line
+}{\f2 \'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  }{\f2 (A}{\f0 \i  i: }{\f0 dom}{\f0 \i  occupiedTracks?\line
+}{\f2 \'ae}{\f0 \i              }{\f2 \'a5 (E}{\f0 \i  b: }{\f0 ran}{\f0 \i  activeBlocks\line
+}{\f2 \'ae}{\f0 \i                     }{\f2 \'a5 (E}{\f0 \i  t: b.tracks\line
+}{\f2 \'ae}{\f0 \i                            }{\f2 \'a5 (}{\f0 \i t.endpoints\line
+}{\f2 \'ae}{\f0 \i                                 = }{\f2 \{}{\f0 \i first }{\f2 (}{\f0 \i occupiedTracks? i}{\f2 ),\line
+\'ae}{\f0 \i                                    second }{\f2 (}{\f0 \i occupiedTracks? i}{\f2 )\}\line
+\'ae}{\f0 \i                               }{\f2 \'a6}{\f0 \i  t2.occupiedTracks i = t}{\f2 ))))\line
+\'ae}{\f0 \i       }{\f2 \'a6}{\f0 \i  trains' = trains }{\f2 \'b1}{\f0 \i  }{\f2 \{(}{\f0 \i headcode? }{\f2 \'b8}{\f0 \i  t2}{\f2 )\}\line
+\'ae}{\f0 \i activeBlocks' = activeBlocks\line
+}{\f2 \'ae}{\f0 \i inactiveBlocks' = inactiveBlocks\line
+}{\f2 \'ae}{\f0 \i levelCrossings' = levelCrossings\line
+}{\f2 \'ae}{\f0 \i stations' = stations\line
+}{\f2 \'ae}{\f0 \i lines' = lines\line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f2 \'c8_}{\f0 \i Init }{\f2 ____________________________________\line
+\'ae}{\f0 \i TrainControlSystem\line
+}{\f2 \'c7_______________\line
+\'ae}{\f0 \i activeBlocks = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i inactiveBlocks = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i levelCrossings = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i stations = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i lines = }{\f2 0}{\f0 \i \line
+}{\f2 \'ae}{\f0 \i trains = }{\f2 0}{\f0 \i \line
+}{\f2 \'d0_______________________________________\line
+
+}
+\par {\f0 \b theorem}{\f0 \i  TrainsNeverCollide\line
+  }{\f2 A}{\f0 \i  TrainControlSystem\line
+      }{\f2 \'a5 A}{\f0 \i  block: }{\f0 ran}{\f0 \i  }{\f2 (}{\f0 \i activeBlocks }{\f2 \fs18 U}{\f0 \i  inactiveBlocks}{\f2 )\line
+}{\f0 \i             }{\f2 \'a5 A}{\f0 \i  track: block.tracks\line
+                  }{\f2 \'a5 }{\f0 \i # }{\f2 (}{\f0 \i trackOccupancy }{\f2 (}{\f0 \i track}{\f2 ,}{\f0 \i  }{\f2 (}{\f0 ran}{\f0 \i  trains}{\f2 )))}{\f0 \i  }{\f2 \'f8}{\f0 \i  }{\f0 1
+}\line
+\par {\f0 \b theorem}{\f0 \i  SafeBlockSectionDesignExists\line
+  }{\f2 E}{\f0 \i  InactiveBlockSection }{\f2 \'a5 }{\f0 \i BlockSection
+}\line
+\par {\f0 \b theorem}{\f0 \i  BlockSectionsAreAlwaysControllable\line
+  }{\f2 A}{\f0 \i  BlockSection\line
+      }{\f2 \'a5 E}{\f0 \i  BlockSection' }{\f2 \'a5 }{\f0 \i BlockSection_SetRoute }{\f2 v}{\f0 \i  BlockSection_CancelRoute
+}}

@@ -1,0 +1,696 @@
+\begin{schema}{Edge}[V]
+  endpoints: \finset  V
+\where
+  \# endpoints = 2
+\end{schema}
+
+\begin{zproof}[Edge\$domainCheck]
+prove by reduce;
+\end{zproof}
+
+\begin{schema}{Path}[V]
+  edges: \iseq  Edge[V]\\
+  vertices: \iseq  V
+\where
+  \# edges + 1 = \# vertices\\
+  \forall  i, j: \dom  vertices @ i + 1 = j \implies  (edges i).endpoints = \{vertices i, vertices j\}
+\end{schema}
+
+\begin{zed}
+Location == \num  \cross  \num 
+\end{zed}
+
+\begin{zed}
+TrainModel ::= AM | ADK | ADC | DC | DX | DA
+\end{zed}
+
+\begin{schema}{TrainTrack}
+  Edge[Location]\\
+  compatibility: \finset  TrainModel\\
+  length: \nat _1{}\\
+  maxSpeed: \nat 
+\end{schema}
+
+\begin{axdef}
+  getTrack: \finset  TrainTrack \cross  \finset  Location \pfun  TrainTrack
+\where
+  getTrack = (\lambda  ts: \finset  TrainTrack; e: \finset  Location | \# e = 2 \land  \# \{  t: ts | t.endpoints = e \} = 1 @ (\mu  t: TrainTrack | t.endpoints = e))
+\end{axdef}
+
+\begin{zproof}[getTrack\$domainCheck]
+prove by reduce;
+\end{zproof}
+
+\begin{axdef}
+  getTrackEndpoints: \finset  TrainTrack \fun  \finset  (\finset  Location)
+\where
+  getTrackEndpoints = (\lambda  ts: \finset  TrainTrack @ \{  e: \finset  Location | \exists  t: ts @ e = t.endpoints \})
+\end{axdef}
+
+\begin{schema}{TrackContinuation}
+  Edge[TrainTrack]\\
+  location: Location
+\where
+  location \in  \bigcap  (getTrackEndpoints endpoints)\\
+  \# (\bigcap  (getTrackEndpoints endpoints)) = 1
+\end{schema}
+
+\begin{zproof}[TrackContinuation\$domainCheck]
+prove by reduce;
+\end{zproof}
+
+\begin{axdef}
+  getTrackContinuation: \finset  TrainTrack \pfun  TrackContinuation
+\where
+  getTrackContinuation = (\lambda  ts: \finset  TrainTrack | \# ts = 2 \land  \# (\bigcap  (getTrackEndpoints ts)) = 1 @ (\mu  c: TrackContinuation | c.endpoints = ts))
+\end{axdef}
+
+\begin{schema}{Route}
+  Edge[Location]\\
+  trackContinuations: \finset  TrackContinuation\\
+  trackContinuationPath: Path[TrainTrack]\\
+  locationPath: Path[Location]
+\where
+  \forall  c: TrackContinuation @ c \in  trackContinuations \iff  (\exists  e: \ran  trackContinuationPath.edges @ e.endpoints = c.endpoints)\\
+  \# trackContinuationPath.vertices = \# locationPath.edges\\
+  \forall  i: \dom  trackContinuationPath.vertices @ (trackContinuationPath.vertices i).endpoints = (locationPath.edges i).endpoints\\
+  endpoints = \{  l: Location | (\exists  t: \ran  trackContinuationPath.vertices @ l \in  t.endpoints) \land  (\forall  c: trackContinuations @ l \neq  c.location) \}
+\end{schema}
+
+\begin{axdef}
+  routeMatches: Route \rel  Location \cross  Location
+\where
+  \forall  r: Route; entry: Location; exit: Location @ r \mapsto  (entry, exit) \in  routeMatches \iff  head r.locationPath.vertices = entry \land  last r.locationPath.vertices = exit
+\end{axdef}
+
+\begin{schema}{RoutePath}
+  Path[Location]\\
+  routes: \finset  Route
+\where
+  \forall  route: Route @ route \in  routes \iff  (\exists  edge: \ran  edges @ edge.endpoints = route.endpoints)
+\end{schema}
+
+\begin{zed}
+Signal ::= SIGNAL\_CLEARED | SIGNAL\_BLOCKED
+\end{zed}
+
+\begin{schema}{InactiveBlockSection}
+  tracks: \finset  TrainTrack\\
+  signals: Route \pfun  Signal\\
+  routeSettings: \finset  Route\\
+  switches: \finset  TrackContinuation \pfun  TrackContinuation\\
+  crossings: \finset  (\finset  TrackContinuation)
+\end{schema}
+
+\begin{schema}{BlockSection\_TracksShouldBeConnected}
+  InactiveBlockSection
+\where
+  \forall  t1, t2: tracks @ \exists  p: RoutePath @ p.routes \subseteq  \dom  signals \land  \{head p.vertices, last p.vertices\} \subseteq  t1.endpoints \cup  t2.endpoints
+\end{schema}
+
+\begin{schema}{BlockSection\_AvailableRoutesAreMaximalAndShouldBeEquipped}
+  InactiveBlockSection
+\where
+  \forall  r: \dom  signals @ \ran  r.trackContinuationPath.vertices \subseteq  tracks \land  (\forall  l: r.endpoints @ \# \{  t: tracks | l \in  t.endpoints \} = 1) \land  (\forall  c: r.trackContinuations @ (\# \{  t: tracks | c.location \in  t.endpoints \} = 2 \lor  \# \{  t: tracks | c.location \in  t.endpoints \} > 2 \land  ((\exists  s: \dom  switches @ c \in  s) \lor  (\exists  crossing: crossings @ c \in  crossing))))
+\end{schema}
+
+\begin{schema}{BlockSection\_JunctionsAreEquippedCompletely}
+  InactiveBlockSection
+\where
+  \forall  l: Location @ \exists  n: \nat  @ n = \# \{  t: TrainTrack | t \in  tracks \land  l \in  t.endpoints \} \land  n > 2 \implies  (\exists  s: \dom  switches @ (\exists  c: s @ l = c.location) \land  \# s + 1 = n) \lor  (\exists  crossing: crossings @ (\exists  c: crossing @ l = c.location) \land  \# crossing * 2 = n)
+\end{schema}
+
+\begin{schema}{BlockSection\_SwitchesAreValidStarGraphs}
+  InactiveBlockSection
+\where
+  \forall  continuations: \dom  switches @ switches continuations \in  continuations \land  (\forall  c: continuations @ c.endpoints \subseteq  tracks) \land  (\exists  t: tracks; l: Location @ (\forall  c: continuations @ (c.location = l \land  t \in  c.endpoints))) \land  \# continuations > 1
+\end{schema}
+
+\begin{schema}{BlockSection\_CrossingsAreValidAndDisjoint}
+  InactiveBlockSection
+\where
+  \forall  continuations: crossings @ (\forall  c: continuations @ c.endpoints \subseteq  tracks) \land  (\forall  c1, c2: continuations @ (c1 \neq  c2 \implies  c1.endpoints \cap  c2.endpoints = \emptyset)) \land  (\exists  l: Location @ (\forall  c: continuations @ c.location = l)) \land  \# continuations > 1
+\end{schema}
+
+\begin{schema}{Interlocking\_RouteSettingsAreCompatible}
+  InactiveBlockSection
+\where
+  routeSettings \subseteq  \dom  signals\\
+  \forall  r1, r2: routeSettings @ r1 \neq  r2 \implies  r1.locationPath.vertices \cap  r2.locationPath.vertices = \emptyset
+\end{schema}
+
+\begin{schema}{Interlocking\_EquipmentMatchesRouteSettings}
+  InactiveBlockSection
+\where
+  \forall  r: \dom  signals @ signals r = SIGNAL\_CLEARED \iff  r \in  routeSettings\\
+  \forall  r: routeSettings; s: \dom  switches @ \forall  c: r.trackContinuations @ c \in  s \implies  switches s = c
+\end{schema}
+
+\begin{schema}{BlockSection}
+  InactiveBlockSection\\
+  BlockSection\_TracksShouldBeConnected\\
+  BlockSection\_AvailableRoutesAreMaximalAndShouldBeEquipped\\
+  BlockSection\_JunctionsAreEquippedCompletely\\
+  BlockSection\_SwitchesAreValidStarGraphs\\
+  BlockSection\_CrossingsAreValidAndDisjoint\\
+  Interlocking\_RouteSettingsAreCompatible\\
+  Interlocking\_EquipmentMatchesRouteSettings
+\end{schema}
+
+\begin{schema}{InactiveBlockSection\_Init}
+  InactiveBlockSection
+\where
+  tracks = \emptyset\\
+  signals = \emptyset\\
+  routeSettings = \emptyset\\
+  switches = \emptyset\\
+  crossings = \emptyset
+\end{schema}
+
+\begin{schema}{InactiveBlockSection\_InstallTrack}
+  \Delta InactiveBlockSection\\
+  from?: Location\\
+  to?: Location\\
+  length?: \nat _1{}\\
+  compatibleTrainModels?: \finset  TrainModel\\
+  maxSpeed?: \nat 
+\where
+  \lnot  (\exists  t: tracks @ t.endpoints = \{to?, from?\})\\
+  \exists  t: TrainTrack @ t.endpoints = \{from?, to?\} \land  t.length = length? \land  t.compatibility = compatibleTrainModels? \land  t.maxSpeed = maxSpeed? \land  tracks' = tracks \cup  \{t\}\\
+  signals' = signals\\
+  routeSettings' = routeSettings\\
+  switches' = switches\\
+  crossings' = crossings
+\end{schema}
+
+\begin{schema}{InactiveBlockSection\_RemoveTrack}
+  \Delta InactiveBlockSection\\
+  from?: Location\\
+  to?: Location
+\where
+  \exists  t: tracks @ t.endpoints = \{to?, from?\} \land  tracks' = tracks \setminus  \{t\}\\
+  signals' = signals\\
+  routeSettings' = routeSettings\\
+  switches' = switches\\
+  crossings' = crossings
+\end{schema}
+
+\begin{axdef}
+  getEquipedJunctionLocations: InactiveBlockSection \fun  \finset  Location
+\where
+  getEquipedJunctionLocations = (\lambda  b: InactiveBlockSection @ \{  l: Location | (\exists  s: \ran  b.switches @ s.location = l) \lor  (\exists  cs: b.crossings @ (\exists  c: cs @ c.location = l)) \})
+\end{axdef}
+
+\begin{axdef}
+  getDivergingTracks: \finset  TrainTrack \cross  Location \cross  \finset  Location \pfun  \finset  TrainTrack
+\where
+  getDivergingTracks = (\lambda  ts: \finset  TrainTrack; c: Location; ds: \finset  Location | \forall  d: ds @ \# \{  t: ts | t.endpoints = \{c, d\} \} = 1 @ \{  t: ts | \exists  d: ds @ t = getTrack (ts, \{c, d\}) \})
+\end{axdef}
+
+\begin{axdef}
+  getSwitch: TrainTrack \cross  \finset  TrainTrack \fun  \finset  TrackContinuation
+\where
+  getSwitch = (\lambda  convergingTrack: TrainTrack; divergingTracks: \finset  TrainTrack @ \{  c: TrackContinuation | \exists  d: divergingTracks @ c = getTrackContinuation \{convergingTrack, d\} \})
+\end{axdef}
+
+\begin{schema}{InactiveBlockSection\_RegisterSwitch}
+  \Delta InactiveBlockSection\\
+  centre?: Location\\
+  convergentEnd?: Location\\
+  divergentEnds?: \finset  Location\\
+  initialPosition?: Location
+\where
+  initialPosition? \in  divergentEnds?\\
+  \# (divergentEnds? \cup  \{centre?, convergentEnd?\}) = 2 + \# divergentEnds?\\
+  \forall  end: divergentEnds? \cup  \{convergentEnd?\} @ \exists  t: tracks @ t.endpoints = \{centre?, end\}\\
+  centre? \notin  getEquipedJunctionLocations \theta  InactiveBlockSection\\
+  \exists  to\_add: \finset  TrackContinuation; initc: TrackContinuation @ to\_add = getSwitch ((getTrack (tracks, \{centre?, convergentEnd?\})), (getDivergingTracks (tracks, centre?, divergentEnds?))) \land  initc = (\mu  c: to\_add | initialPosition? \in  \bigcup  (getTrackEndpoints c.endpoints)) \land  switches' = switches \oplus  \{(to\_add \mapsto  initc)\}\\
+  tracks' = tracks\\
+  signals' = signals\\
+  routeSettings' = routeSettings\\
+  crossings' = crossings
+\end{schema}
+
+\begin{schema}{InactiveBlockSection\_RegisterCrossing}
+  \Delta InactiveBlockSection\\
+  centre?: Location\\
+  ends?: \finset  (Location \cross  Location)
+\where
+  centre? \notin  getEquipedJunctionLocations \theta  InactiveBlockSection\\
+  \forall  e: ends? @ \exists  t1, t2: tracks @ t1 \neq  t2 \land  t1.endpoints = \{first e, centre?\} \land  t2.endpoints = \{second e, centre?\}\\
+  crossings' = crossings \cup  \{\{  c: TrackContinuation | \exists  e: ends? @ c = getTrackContinuation \{(getTrack (tracks, \{(first e), centre?\})), (getTrack (tracks, \{(second e), centre?\}))\} \}\}\\
+  tracks' = tracks\\
+  signals' = signals\\
+  routeSettings' = routeSettings\\
+  switches' = switches
+\end{schema}
+
+\begin{schema}{InactiveBlockSection\_UnregisterJunction}
+  \Delta InactiveBlockSection\\
+  centre?: Location
+\where
+  centre? \in  getEquipedJunctionLocations \theta  InactiveBlockSection\\
+  switches' = switches \nrres  \{  c: TrackContinuation | c.location = centre? \}\\
+  tracks' = tracks\\
+  signals' = signals\\
+  routeSettings' = routeSettings\\
+  crossings' = crossings \setminus  \{  cs: \finset  TrackContinuation | \exists  c: cs @ c.location = centre? \}
+\end{schema}
+
+\begin{schema}{InactiveBlockSection\_RegisterRoute}
+  \Delta InactiveBlockSection\\
+  entry?: Location\\
+  exit?: Location
+\where
+  \# \{  t: tracks | entry? \in  t.endpoints \} = 1\\
+  \# \{  t: tracks | exit? \in  t.endpoints \} = 1\\
+  (entry?, exit?) \notin  \ran  (\dom  signals \dres  routeMatches)\\
+  \exists  r: \dom  (routeMatches \rres  \{(entry?, exit?)\}); signals': Route \pfun  Signal @ signals' = signals \oplus  \{(r \mapsto  SIGNAL\_BLOCKED)\} \land  BlockSection\_AvailableRoutesAreMaximalAndShouldBeEquipped'\\
+  tracks' = tracks\\
+  routeSettings' = routeSettings\\
+  switches' = switches\\
+  crossings' = crossings
+\end{schema}
+
+\begin{schema}{InactiveBlockSection\_UnregisterRoute}
+  \Delta InactiveBlockSection\\
+  entry?: Location\\
+  exit?: Location
+\where
+  \# \{  t: tracks | entry? \in  t.endpoints \} = 1\\
+  \# \{  t: tracks | exit? \in  t.endpoints \} = 1\\
+  \exists  r: \dom  (\dom  signals \dres  routeMatches \rres  \{(entry?, exit?)\}) @ signals' = \{r\} \ndres  signals\\
+  tracks' = tracks\\
+  routeSettings' = routeSettings\\
+  switches' = switches\\
+  crossings' = crossings
+\end{schema}
+
+\begin{schema}{BlockSection\_SetRoute}
+  \Delta BlockSection\\
+  entry?: Location\\
+  exit?: Location
+\where
+  \dom  switches' = \dom  switches\\
+  \exists  r: \dom  (\dom  signals \dres  routeMatches \rres  \{(entry?, exit?)\}) @ r \notin  routeSettings \land  r \in  \dom  signals \land  (\forall  r2: routeSettings @ r.locationPath.vertices \cap  r2.locationPath.vertices = \emptyset) \land  signals' = signals \oplus  \{(r \mapsto  SIGNAL\_CLEARED)\} \land  routeSettings' = routeSettings \cup  \{r\} \land  (\forall  s: \dom  switches @ (\forall  c: r.trackContinuations @ ((c \notin  s \implies  switches' s = switches s) \land  (c \in  s \implies  switches' s = c))))\\
+  tracks' = tracks\\
+  crossings' = crossings
+\end{schema}
+
+\begin{schema}{BlockSection\_CancelRoute}
+  \Delta BlockSection\\
+  entry?: Location\\
+  exit?: Location
+\where
+  \exists  r: \dom  (\dom  signals \dres  routeMatches \rres  \{(entry?, exit?)\}) @ r \in  routeSettings \land  signals' = signals \oplus  \{(r \mapsto  SIGNAL\_BLOCKED)\} \land  routeSettings' = routeSettings \setminus  \{r\}\\
+  tracks' = tracks\\
+  switches' = switches\\
+  crossings' = crossings
+\end{schema}
+
+\begin{schema}{BlockSection\_CancelAllRoutes}
+  \Delta BlockSection
+\where
+  \dom  signals' = \dom  signals\\
+  \forall  r: \dom  signals @ signals' r = SIGNAL\_BLOCKED\\
+  routeSettings' = \emptyset\\
+  tracks' = tracks\\
+  switches' = switches\\
+  crossings' = crossings
+\end{schema}
+
+\begin{zed}
+DoorState ::= DOOR\_OPEN | DOOR\_CLOSED
+\end{zed}
+
+\begin{zed}
+  [HeadCode]
+\end{zed}
+
+\begin{zed}
+  [String]
+\end{zed}
+
+\begin{schema}{Train}
+  model: TrainModel\\
+  length: \nat _1{}\\
+  currentTrack: TrainTrack\\
+  distanceIntoTrack: \nat \\
+  occupiedTracks: \iseq  TrainTrack\\
+  speed: \nat \\
+  direction: Location\\
+  leftDoors: DoorState\\
+  rightDoors: DoorState
+\where
+  direction \in  currentTrack.endpoints\\
+  currentTrack = head occupiedTracks
+\end{schema}
+
+\begin{schema}{Platform}
+  block: BlockSection\\
+  doors: DoorState
+\where
+  block.switches = \emptyset\\
+  block.crossings = \emptyset
+\end{schema}
+
+\begin{axdef}
+  trackOccupancy: TrainTrack \cross  \finset  Train \fun  \finset  Train
+\where
+  \forall  track: TrainTrack; trains: \finset  Train @ trackOccupancy (track, trains) = \{  t: trains | track \in  \ran  t.occupiedTracks \}
+\end{axdef}
+
+\begin{zed}
+BarrierState ::= BARRIER\_RAISED | BARRIER\_LOWERED
+\end{zed}
+
+\begin{schema}{TrainControlSystem}
+  activeBlocks: \nat  \pinj  BlockSection\\
+  inactiveBlocks: \nat  \pinj  InactiveBlockSection\\
+  levelCrossings: \finset  \nat  \pfun  BarrierState\\
+  stations: String \pinj  \iseq  Platform\\
+  lines: String \pinj  \iseq  String\\
+  trains: HeadCode \pinj  Train
+\where
+  \ran  lines = \iseq  (\dom  stations)\\
+  \bigcup  (\dom  levelCrossings) \subseteq  \dom  activeBlocks \cup  \dom  inactiveBlocks\\
+  \forall  s: \ran  stations @ \forall  platform: \ran  s @ platform.block \in  \ran  activeBlocks \cup  \ran  inactiveBlocks\\
+  \forall  l: \ran  lines @ \ran  l \subseteq  \dom  stations\\
+  \forall  train: \ran  trains @ \ran  train.occupiedTracks \subseteq  \{  t: TrainTrack | \exists  b: \ran  activeBlocks @ t \in  b.tracks \}
+\end{schema}
+
+\begin{schema}{InstallNewBlockSection}
+  \Delta TrainControlSystem\\
+  blockSectionID!: \nat 
+\where
+  blockSectionID! = \# activeBlocks + \# inactiveBlocks + 1\\
+  \exists  InactiveBlockSection\_Init @ inactiveBlocks' = inactiveBlocks \oplus  \{(blockSectionID! \mapsto  \theta  InactiveBlockSection)\}\\
+  activeBlocks' = activeBlocks\\
+  levelCrossings' = levelCrossings\\
+  stations' = stations\\
+  lines' = lines\\
+  trains' = trains
+\end{schema}
+
+\begin{schema}{InstallNewLevelCrossing\_NotInitialised}
+  \Delta TrainControlSystem\\
+  blockSectionIDs?: \finset  \nat 
+\where
+  blockSectionIDs? \neq  \emptyset\\
+  blockSectionIDs? \subseteq  \dom  activeBlocks \cup  \dom  inactiveBlocks\\
+  blockSectionIDs? \notin  \dom  levelCrossings\\
+  activeBlocks' = activeBlocks\\
+  inactiveBlocks' = inactiveBlocks\\
+  levelCrossings' = levelCrossings \oplus  \{(blockSectionIDs? \mapsto  BARRIER\_LOWERED)\}\\
+  stations' = stations\\
+  lines' = lines\\
+  trains' = trains
+\end{schema}
+
+\begin{schema}{Update\_LevelCrossings}
+  \Delta TrainControlSystem
+\where
+  \dom  levelCrossings' = \dom  levelCrossings\\
+  \forall  ids: \dom  levelCrossings @ (ids \subseteq  \dom  activeBlocks \implies  ((\exists  i: ids @ (activeBlocks i).routeSettings \neq  \emptyset) \implies  levelCrossings' ids = BARRIER\_LOWERED) \land  ((\forall  i: ids @ (activeBlocks i).routeSettings = \emptyset) \implies  levelCrossings' ids = BARRIER\_RAISED)) \land  (ids \cap  \dom  inactiveBlocks \neq  \emptyset \implies  levelCrossings' ids = BARRIER\_LOWERED)\\
+  activeBlocks' = activeBlocks\\
+  inactiveBlocks' = inactiveBlocks\\
+  stations' = stations\\
+  lines' = lines\\
+  trains' = trains
+\end{schema}
+
+\begin{zed}
+InstallNewLevelCrossing \defs InstallNewLevelCrossing\_NotInitialised \semi  Update\_LevelCrossings
+\end{zed}
+
+\begin{schema}{Update\_InactiveBlockSection}
+  \Delta TrainControlSystem\\
+  \Delta InactiveBlockSection\\
+  blockSectionID?: \nat 
+\where
+  blockSectionID? \in  \dom  inactiveBlocks\\
+  \theta  InactiveBlockSection = inactiveBlocks blockSectionID?\\
+  inactiveBlocks' = inactiveBlocks \oplus  \{(blockSectionID? \mapsto  \theta  InactiveBlockSection')\}\\
+  activeBlocks' = activeBlocks\\
+  levelCrossings' = levelCrossings\\
+  stations' = stations\\
+  lines' = lines\\
+  trains' = trains
+\end{schema}
+
+\begin{schema}{Update\_ActiveBlockSection}
+  \Delta TrainControlSystem\\
+  \Delta BlockSection\\
+  blockSectionID?: \nat 
+\where
+  blockSectionID? \in  \dom  activeBlocks\\
+  \theta  BlockSection = activeBlocks blockSectionID?\\
+  activeBlocks' = activeBlocks \oplus  \{(blockSectionID? \mapsto  \theta  BlockSection')\}\\
+  inactiveBlocks' = inactiveBlocks\\
+  levelCrossings' = levelCrossings\\
+  stations' = stations\\
+  lines' = lines\\
+  trains' = trains
+\end{schema}
+
+\begin{zed}
+InstallTrack\_Unchecked \defs \exists  \Delta InactiveBlockSection @ InactiveBlockSection\_InstallTrack \land  Update\_InactiveBlockSection
+\end{zed}
+
+\begin{schema}{InstallTrack}
+  InstallTrack\_Unchecked
+\where
+  \lnot  (\exists  b: \ran  activeBlocks \cup  \ran  inactiveBlocks @ (\exists  t: b.tracks @ t.endpoints = \{to?, from?\}))\\
+  \forall  b: \ran  activeBlocks \cup  \ran  inactiveBlocks @ (\exists  t: b.tracks @ t.endpoints \cap  \{to?, from?\} \neq  \emptyset) \implies  inactiveBlocks blockSectionID? = b
+\end{schema}
+
+\begin{zed}
+RemoveTrack \defs \exists  \Delta InactiveBlockSection @ InactiveBlockSection\_RemoveTrack \land  Update\_InactiveBlockSection
+\end{zed}
+
+\begin{zed}
+RegisterSwitch \defs \exists  \Delta InactiveBlockSection @ InactiveBlockSection\_RegisterSwitch \land  Update\_InactiveBlockSection
+\end{zed}
+
+\begin{zed}
+RegisterCrossing \defs \exists  \Delta InactiveBlockSection @ InactiveBlockSection\_RegisterCrossing \land  Update\_InactiveBlockSection
+\end{zed}
+
+\begin{zed}
+UnregisterJunction \defs \exists  \Delta InactiveBlockSection @ InactiveBlockSection\_UnregisterJunction \land  Update\_InactiveBlockSection
+\end{zed}
+
+\begin{zed}
+RegisterRoute \defs \exists  \Delta InactiveBlockSection @ InactiveBlockSection\_RegisterRoute \land  Update\_InactiveBlockSection
+\end{zed}
+
+\begin{zed}
+UnregisterRoute \defs \exists  \Delta InactiveBlockSection @ InactiveBlockSection\_UnregisterRoute \land  Update\_InactiveBlockSection
+\end{zed}
+
+\begin{zed}
+SetRoute\_Unchecked\_WithoutLevelCrossing \defs \exists  \Delta BlockSection @ BlockSection\_SetRoute \land  Update\_ActiveBlockSection
+\end{zed}
+
+\begin{zed}
+SetRoute\_Unchecked \defs SetRoute\_Unchecked\_WithoutLevelCrossing \semi  Update\_LevelCrossings
+\end{zed}
+
+\begin{zed}
+CancelRoute\_Unchecked\_WithoutLevelCrossing \defs \exists  \Delta BlockSection @ BlockSection\_CancelRoute \land  Update\_ActiveBlockSection
+\end{zed}
+
+\begin{zed}
+CancelRoute\_Unchecked \defs CancelRoute\_Unchecked\_WithoutLevelCrossing \semi  Update\_LevelCrossings
+\end{zed}
+
+\begin{schema}{CancelRoute}
+  CancelRoute\_Unchecked
+\where
+  \forall  r: \dom  (\dom  (activeBlocks blockSectionID?).signals \dres  routeMatches \rres  \{(entry?, exit?)\}) @ \forall  t: \ran  r.trackContinuationPath.vertices @ trackOccupancy (t, (\ran  trains)) = \emptyset
+\end{schema}
+
+\begin{zed}
+CancelAllRoutesForBlock\_Unchecked\_WithoutLevelCrossing \defs \exists  \Delta BlockSection @ BlockSection\_CancelAllRoutes \land  Update\_ActiveBlockSection
+\end{zed}
+
+\begin{zed}
+CancelAllRoutesForBlock\_Unchecked \defs CancelAllRoutesForBlock\_Unchecked\_WithoutLevelCrossing \semi  Update\_LevelCrossings
+\end{zed}
+
+\begin{schema}{CancelAllRoutesForBlock}
+  CancelAllRoutesForBlock\_Unchecked
+\where
+  \forall  r: \dom  (\dom  (activeBlocks blockSectionID?).signals \dres  routeMatches) @ \forall  t: \ran  r.trackContinuationPath.vertices @ trackOccupancy (t, (\ran  trains)) = \emptyset
+\end{schema}
+
+\begin{schema}{ActivateBlockSection}
+  \Delta TrainControlSystem\\
+  blockSectionID?: \nat 
+\where
+  blockSectionID? \in  \dom  inactiveBlocks\\
+  inactiveBlocks blockSectionID? \in  BlockSection\\
+  inactiveBlocks' = \{blockSectionID?\} \ndres  inactiveBlocks\\
+  activeBlocks' = activeBlocks \oplus  \{(blockSectionID? \mapsto  inactiveBlocks blockSectionID?)\}\\
+  levelCrossings' = levelCrossings\\
+  stations' = stations\\
+  lines' = lines\\
+  trains' = trains
+\end{schema}
+
+\begin{schema}{DeactivateBlockSection\_NotCleared}
+  \Delta TrainControlSystem\\
+  blockSectionID?: \nat 
+\where
+  blockSectionID? \in  \dom  activeBlocks\\
+  activeBlocks' = \{blockSectionID?\} \ndres  activeBlocks\\
+  inactiveBlocks' = inactiveBlocks \oplus  \{(blockSectionID? \mapsto  activeBlocks blockSectionID?)\}\\
+  levelCrossings' = levelCrossings\\
+  stations' = stations\\
+  lines' = lines\\
+  trains' = trains
+\end{schema}
+
+\begin{zed}
+DeactivateBlockSection \defs CancelAllRoutesForBlock \semi  DeactivateBlockSection\_NotCleared
+\end{zed}
+
+\begin{schema}{BuildNewStation}
+  \Delta TrainControlSystem\\
+  name?: String\\
+  platforms?: \iseq  \nat 
+\where
+  platforms? \neq  \langle \rangle \\
+  name? \notin  \dom  stations\\
+  stations' = stations \oplus  \{(name? \mapsto  \{  p: \nat  \cross  Platform | first p \in  \dom  platforms? \land  (second p).block = (activeBlocks \cup  inactiveBlocks) (platforms? (first p)) \})\}\\
+  activeBlocks' = activeBlocks\\
+  inactiveBlocks' = inactiveBlocks\\
+  levelCrossings' = levelCrossings\\
+  lines' = lines\\
+  trains' = trains
+\end{schema}
+
+\begin{schema}{RegisterNewLine}
+  \Delta TrainControlSystem\\
+  name?: String\\
+  stations?: \iseq  String
+\where
+  stations? \neq  \langle \rangle \\
+  name? \notin  \dom  lines\\
+  lines' = lines \oplus  \{(name? \mapsto  stations?)\}\\
+  activeBlocks' = activeBlocks\\
+  inactiveBlocks' = inactiveBlocks\\
+  levelCrossings' = levelCrossings\\
+  stations' = stations\\
+  trains' = trains
+\end{schema}
+
+\begin{schema}{IntroduceNewTrain}
+  \Delta TrainControlSystem\\
+  headcode?: HeadCode\\
+  model?: TrainModel\\
+  length?: \nat _1{}\\
+  trackFront?: Location\\
+  trackRear?: Location
+\where
+  headcode? \notin  \dom  trains\\
+  \exists  t: Train; b: \ran  activeBlocks @ \exists  route: b.routeSettings @ \exists  track: \ran  route.trackContinuationPath.vertices @ track.endpoints = \{trackFront?, trackRear?\} \land  track.length \geq  length? \land  model? \in  track.compatibility \land  t.model = model? \land  t.length = length? \land  t.currentTrack = track \land  t.distanceIntoTrack = track.length \land  t.occupiedTracks = \langle track\rangle  \land  t.speed = 0 \land  t.direction = trackFront? \land  t.leftDoors = DOOR\_CLOSED \land  t.rightDoors = DOOR\_CLOSED \land  trains' = trains \oplus  \{(headcode? \mapsto  t)\}\\
+  activeBlocks' = activeBlocks\\
+  inactiveBlocks' = inactiveBlocks\\
+  levelCrossings' = levelCrossings\\
+  stations' = stations\\
+  lines' = lines
+\end{schema}
+
+\begin{axdef}
+  getSignalsAtLocation: \finset  BlockSection \cross  TrainTrack \cross  Location \fun  \finset  Signal
+\where
+  \forall  bs: \finset  BlockSection; t: TrainTrack; l: Location @ getSignalsAtLocation (bs, t, l) = \{  s: Signal | \exists  b: bs @ \exists  r: \dom  b.signals @ head r.locationPath.vertices = l \land  head r.trackContinuationPath.vertices \neq  t \land  b.signals r = s \}
+\end{axdef}
+
+\begin{schema}{RefreshAutoTrainOperation}
+  \Delta TrainControlSystem
+\where
+  \dom  trains' = \dom  trains\\
+  \forall  h: \dom  trains @ \exists  t1, t2: Train @ t1 = trains h \land  t2 = trains' h \land  t2.model = t1.model \land  t2.length = t1.length \land  t2.currentTrack = t1.currentTrack \land  t2.distanceIntoTrack = t1.distanceIntoTrack \land  t2.occupiedTracks = t1.occupiedTracks \land  t2.direction = t1.direction \land  t2.leftDoors = DOOR\_CLOSED \land  t2.rightDoors = DOOR\_CLOSED \land  (getSignalsAtLocation ((\ran  activeBlocks), t1.currentTrack, t1.direction) = \emptyset \implies  t2.speed = t1.currentTrack.maxSpeed) \land  (\exists  s: getSignalsAtLocation ((\ran  activeBlocks), t1.currentTrack, t1.direction) @ (s = SIGNAL\_CLEARED \implies  t2.speed = t1.currentTrack.maxSpeed)) \land  (getSignalsAtLocation ((\ran  activeBlocks), t1.currentTrack, t1.direction) \neq  \emptyset \land  (\forall  s: getSignalsAtLocation ((\ran  activeBlocks), t1.currentTrack, t1.direction) @ s = SIGNAL\_BLOCKED) \implies  t2.speed = 0)\\
+  activeBlocks' = activeBlocks\\
+  inactiveBlocks' = inactiveBlocks\\
+  levelCrossings' = levelCrossings\\
+  stations' = stations\\
+  lines' = lines
+\end{schema}
+
+\begin{zed}
+DisplayedTrackState ::= TRACK\_OCCUPIED | TRACK\_SET | TRACK\_UNSET
+\end{zed}
+
+\begin{schema}{MimicPanel\_DisplayTracks}
+  \Xi TrainControlSystem\\
+  tracks!: \finset  (Location \cross  Location \cross  DisplayedTrackState \cross  \nat )
+\where
+  \forall  l1, l2: Location; d: DisplayedTrackState; n: \nat  @ (l1, l2, d, n) \in  tracks! \iff  n \in  \dom  activeBlocks \cup  \dom  inactiveBlocks \land  (\exists  b: BlockSection @ (b = (activeBlocks \cup  inactiveBlocks) n \land  (\exists  t: b.tracks @ (t.endpoints = \{l1, l2\} \land  (trackOccupancy (t, (\ran  trains)) \neq  \emptyset \implies  d = TRACK\_OCCUPIED) \land  (trackOccupancy (t, (\ran  trains)) = \emptyset \land  (\exists  r: b.routeSettings @ t \in  \ran  r.trackContinuationPath.vertices) \implies  d = TRACK\_SET) \land  (trackOccupancy (t, (\ran  trains)) = \emptyset \land  (\forall  r: b.routeSettings @ t \notin  \ran  r.trackContinuationPath.vertices) \implies  d = TRACK\_UNSET)))))
+\end{schema}
+
+\begin{schema}{MimicPanel\_DisplaySignals}
+  \Xi TrainControlSystem\\
+  signals!: \finset  (Location \cross  Location \cross  Signal)
+\where
+  \forall  l1, l2: Location; s: Signal @ (l1, l2, s) \in  signals! \iff  (\exists  b: \ran  activeBlocks \cup  \ran  inactiveBlocks @ (\exists  r: \dom  (\dom  b.signals \dres  routeMatches \rres  \{(l1, l2)\}) @ s = b.signals r))
+\end{schema}
+
+\begin{schema}{MimicPanel\_DisplayStations}
+  \Xi TrainControlSystem\\
+  stations!: \finset  (String \cross  \iseq  \nat )
+\where
+  \forall  s: String; p: \iseq  \nat  @ (s, p) \in  stations! \iff  s \in  \dom  stations \land  \# p = \# (stations s) \land  (\forall  i: \dom  p @ (p i \in  \dom  (activeBlocks \cup  inactiveBlocks) \land  (activeBlocks \cup  inactiveBlocks) (p i) = (stations s i).block))
+\end{schema}
+
+\begin{schema}{MimicPanel\_DisplayLevelCrossings}
+  \Xi TrainControlSystem\\
+  levelCrossings!: \finset  (\finset  \nat  \cross  BarrierState)
+\where
+  levelCrossings! = levelCrossings
+\end{schema}
+
+\begin{zed}
+DisplayMimicPanel \defs MimicPanel\_DisplayTracks \land  MimicPanel\_DisplaySignals \land  MimicPanel\_DisplayStations \land  MimicPanel\_DisplayLevelCrossings
+\end{zed}
+
+\begin{schema}{ReportTrainLocation}
+  \Delta TrainControlSystem\\
+  headcode?: HeadCode\\
+  occupiedTracks?: \iseq  (Location \cross  Location)\\
+  distanceIntoTrack?: \nat 
+\where
+  headcode? \in  \dom  trains\\
+  \exists  t1, t2: Train @ t1 = trains headcode? \land  t2.model = t1.model \land  t2.length = t1.length \land  t2.distanceIntoTrack = distanceIntoTrack? \land  t2.speed = t1.speed \land  t2.direction = t1.direction \land  t2.leftDoors = t1.leftDoors \land  t2.rightDoors = t1.rightDoors \land  t2.currentTrack = head t2.occupiedTracks \land  \dom  t2.occupiedTracks = 1 .. \# occupiedTracks? \land  (\forall  i: \dom  occupiedTracks? @ (\exists  b: \ran  activeBlocks @ (\exists  t: b.tracks @ (t.endpoints = \{first (occupiedTracks? i), second (occupiedTracks? i)\} \land  t2.occupiedTracks i = t)))) \land  trains' = trains \oplus  \{(headcode? \mapsto  t2)\}\\
+  activeBlocks' = activeBlocks\\
+  inactiveBlocks' = inactiveBlocks\\
+  levelCrossings' = levelCrossings\\
+  stations' = stations\\
+  lines' = lines
+\end{schema}
+
+\begin{schema}{Init}
+  TrainControlSystem
+\where
+  activeBlocks = \emptyset\\
+  inactiveBlocks = \emptyset\\
+  levelCrossings = \emptyset\\
+  stations = \emptyset\\
+  lines = \emptyset\\
+  trains = \emptyset
+\end{schema}
+
+\begin{theorem}{TrainsNeverCollide}
+\forall  TrainControlSystem @ \forall  block: \ran  (activeBlocks \cup  inactiveBlocks) @ \forall  track: block.tracks @ \# (trackOccupancy (track, (\ran  trains))) \leq  1
+\end{theorem}
+
+\begin{theorem}{SafeBlockSectionDesignExists}
+\exists  InactiveBlockSection @ BlockSection
+\end{theorem}
+
+\begin{theorem}{BlockSectionsAreAlwaysControllable}
+\forall  BlockSection @ \exists  BlockSection' @ BlockSection\_SetRoute \lor  BlockSection\_CancelRoute
+\end{theorem}
+

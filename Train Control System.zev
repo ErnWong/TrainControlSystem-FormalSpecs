@@ -1,0 +1,616 @@
+<Z-EVES-GUI-State version="1" index="116"><textItem location="gui::26" history="2"><schema-box location="gui::26">Edge[V]<decl-part/> endpoints: &Fopf;V<ax-part/> # endpoints = 2</schema-box></textItem
+><textItem location="gui::27" history="3"><schema-box location="gui::27">Path[V]<decl-part/>  edges: <word style="roman"/>iseq<word/> Edge[V]
+vertices: <word style="roman"/>iseq<word/> V<ax-part/>  # edges + 1 = # vertices
+&forall; i,j: <word style="roman"/>dom<word/> vertices
+    &bullet; (i+1=j)&rArr;((edges(i)).endpoints={vertices(i),vertices(j)})</schema-box></textItem
+><textItem location="gui::1" history="4"><zed-box location="gui::1">Location == &Zopf;&cross;&Zopf;</zed-box></textItem
+><textItem location="gui::6" history="5"><zed-box location="gui::6">TrainModel ::= AM | ADK | ADC | DC |DX | DA</zed-box></textItem
+><textItem location="gui::2" history="6"><schema-box location="gui::2">TrainTrack<decl-part/> Edge[Location]
+compatibility: &Fopf; TrainModel
+length: &Nopf;&sub1;
+maxSpeed: &Nopf;</schema-box></textItem
+><textItem location="gui::60" history="7"><axiomatic-box location="gui::60"><decl-part/>getTrack:&Fopf;TrainTrack&cross;&Fopf;Location&rarrb;TrainTrack<ax-part/>getTrack=(&lambda;ts:&Fopf;TrainTrack;e:&Fopf;Location|#e=2&wedge;#{t:ts|t.endpoints=e}=1
+          &bullet; (&mu;t:TrainTrack|t.endpoints=e))</axiomatic-box></textItem
+><textItem location="gui::62" history="8"><axiomatic-box location="gui::62"><decl-part/>getTrackEndpoints:&Fopf;TrainTrack&rarr;&Fopf;(&Fopf;Location)<ax-part/>  getTrackEndpoints=
+           (&lambda; ts:&Fopf;TrainTrack
+                    &bullet;{e:&Fopf;Location
+                              |&exists;t:ts
+                                     &bullet;e=t.endpoints})</axiomatic-box></textItem
+><textItem location="gui::31" history="9"><schema-box location="gui::31">TrackContinuation<decl-part/> Edge[TrainTrack]
+location: Location<ax-part/> location
+  &isin; &bigcap; (getTrackEndpoints(endpoints))
+# (&bigcap; (getTrackEndpoints(endpoints))) = 1</schema-box></textItem
+><textItem location="gui::61" history="10"><axiomatic-box location="gui::61"><decl-part/>getTrackContinuation: &Fopf; TrainTrack &rarrb; TrackContinuation<ax-part/>      getTrackContinuation = (&lambda; ts: &Fopf; TrainTrack
+       | (# ts = 2 &wedge; #(&bigcap;(getTrackEndpoints ts)) = 1)
+         &bullet; (&mu; c:TrackContinuation | c.endpoints=ts))</axiomatic-box></textItem
+><textItem location="gui::33" history="11"><schema-box location="gui::33">Route<decl-part/> Edge[Location]
+trackContinuations: &Fopf;TrackContinuation
+trackContinuationPath: Path[TrainTrack]
+locationPath: Path[Location]<ax-part/> &forall; c: TrackContinuation
+    &bullet; c &isin; trackContinuations
+      &hArr; (&exists; e: <word style="roman"/>ran<word/> trackContinuationPath.edges &bullet; e.endpoints = c.endpoints)
+# trackContinuationPath.vertices = # locationPath.edges
+&forall; i: <word style="roman"/>dom<word/> trackContinuationPath.vertices
+    &bullet; (trackContinuationPath.vertices i).endpoints
+        = (locationPath.edges i).endpoints
+endpoints
+  = {  l: Location
+         | (&exists; t: <word style="roman"/>ran<word/> trackContinuationPath.vertices &bullet; l &isin; t.endpoints)
+           &wedge; (&forall; c: trackContinuations &bullet; l &neq; c.location) }</schema-box></textItem
+><textItem location="gui::90" history="12"><axiomatic-box location="gui::90"><decl-part/>routeMatches: Route &lrarr;(Location &cross; Location)<ax-part/>  &forall; r: Route; entry: Location; exit: Location
+    &bullet; (r &rtarr; (entry, exit) )&isin; routeMatches
+      &hArr; head r.locationPath.vertices = entry
+        &wedge; last r.locationPath.vertices = exit</axiomatic-box></textItem
+><textItem location="gui::36" history="13"><schema-box location="gui::36"> RoutePath <decl-part/>   Path[Location]
+routes:&Fopf;Route<ax-part/>  &forall;route:Route&bullet;route&isin;routes&hArr;(&exists;edge:<word style="roman"/>ran<word/> edges&bullet;edge.endpoints = route.endpoints)</schema-box></textItem
+><textItem location="gui::34" history="14"><zed-box location="gui::34">Signal ::= SIGNAL_CLEARED | SIGNAL_BLOCKED</zed-box></textItem
+><textItem location="gui::38" history="15"><schema-box location="gui::38">InactiveBlockSection<decl-part/> tracks: &Fopf; TrainTrack
+signals: Route &rarrb; Signal
+routeSettings: &Fopf; Route
+switches: &Fopf; TrackContinuation &rarrb; TrackContinuation
+crossings: &Fopf; (&Fopf; TrackContinuation)</schema-box></textItem
+><textItem location="gui::37" history="16"><schema-box location="gui::37">BlockSection_TracksShouldBeConnected<decl-part/> InactiveBlockSection<ax-part/> &forall; t1, t2: tracks
+    &bullet; &exists; p: RoutePath
+          &bullet; p.routes &subeq; <word style="roman"/>dom<word/> signals
+            &wedge; {head p.vertices, last p.vertices}
+                &subeq; t1.endpoints &cup; t2.endpoints</schema-box></textItem
+><textItem location="gui::39" history="17"><schema-box location="gui::39">BlockSection_AvailableRoutesAreMaximalAndShouldBeEquipped<decl-part/> InactiveBlockSection<ax-part/> &forall; r: <word style="roman"/>dom<word/> signals
+    &bullet; <word style="roman"/>ran<word/> r.trackContinuationPath.vertices &subeq; tracks
+      &wedge; (&forall; l: r.endpoints &bullet; # {  t: tracks | l &isin; t.endpoints } = 1)
+      &wedge; (&forall; c: r.trackContinuations
+             &bullet; (# {  t: tracks | c.location &isin; t.endpoints } = 2
+                &vee; # {  t: tracks | c.location &isin; t.endpoints } &gt; 2
+                  &wedge; ((&exists; s: <word style="roman"/>dom<word/> switches &bullet; c &isin; s)
+                     &vee; (&exists; crossing: crossings &bullet; c &isin; crossing))))</schema-box></textItem
+><textItem location="gui::40" history="18"><schema-box location="gui::40">BlockSection_JunctionsAreEquippedCompletely<decl-part/> InactiveBlockSection<ax-part/> &forall; l: Location
+    &bullet; &exists; n: &Nopf;
+          &bullet; n = # {  t: TrainTrack | t &isin; tracks &wedge; l &isin; t.endpoints } &wedge; n &gt; 2
+            &rArr; (&exists; s: <word style="roman"/>dom<word/> switches &bullet; (&exists; c: s &bullet; l = c.location) &wedge; # s + 1 = n)
+              &vee; (&exists; crossing: crossings
+                     &bullet; (&exists; c: crossing &bullet; l = c.location) &wedge; # crossing * 2 = n)</schema-box></textItem
+><textItem location="gui::41" history="19"><schema-box location="gui::41">BlockSection_SwitchesAreValidStarGraphs<decl-part/> InactiveBlockSection<ax-part/> &forall; continuations: <word style="roman"/>dom<word/> switches
+    &bullet; switches continuations &isin; continuations
+      &wedge; (&forall; c: continuations &bullet; c.endpoints &subeq; tracks)
+      &wedge; (&exists; t: tracks; l: Location
+             &bullet; (&forall; c: continuations &bullet; (c.location = l &wedge; t &isin; c.endpoints)))
+      &wedge; # continuations &gt; 1</schema-box></textItem
+><textItem location="gui::47" history="20"><schema-box location="gui::47">BlockSection_CrossingsAreValidAndDisjoint<decl-part/> InactiveBlockSection<ax-part/> &forall; continuations: crossings
+    &bullet; (&forall; c: continuations &bullet; c.endpoints &subeq; tracks)
+      &wedge; (&forall; c1, c2: continuations &bullet; c1&neq;c2&rArr;c1.endpoints &cap; c2.endpoints = &empty;)
+      &wedge; (&exists; l: Location &bullet; (&forall; c: continuations &bullet; c.location = l))
+      &wedge; # continuations &gt; 1</schema-box></textItem
+><textItem location="gui::48" history="21"><schema-box location="gui::48">Interlocking_RouteSettingsAreCompatible<decl-part/> InactiveBlockSection<ax-part/> routeSettings &subeq; <word style="roman"/>dom<word/> signals
+&forall; r1, r2: routeSettings
+    &bullet; r1 &neq; r2 &rArr; r1.locationPath.vertices &cap; r2.locationPath.vertices = &empty;</schema-box></textItem
+><textItem location="gui::42" history="22"><schema-box location="gui::42">Interlocking_EquipmentMatchesRouteSettings<decl-part/> InactiveBlockSection<ax-part/> &forall; r: <word style="roman"/>dom<word/> signals &bullet; signals r = SIGNAL_CLEARED &hArr; r &isin; routeSettings
+&forall; r: routeSettings; s: <word style="roman"/>dom<word/> switches
+    &bullet; &forall; c: r.trackContinuations &bullet; c &isin; s &rArr; switches s = c</schema-box></textItem
+><textItem location="gui::51" history="23"><schema-box location="gui::51">BlockSection<decl-part/> InactiveBlockSection
+BlockSection_TracksShouldBeConnected
+BlockSection_AvailableRoutesAreMaximalAndShouldBeEquipped
+BlockSection_JunctionsAreEquippedCompletely
+BlockSection_SwitchesAreValidStarGraphs
+BlockSection_CrossingsAreValidAndDisjoint
+Interlocking_RouteSettingsAreCompatible
+Interlocking_EquipmentMatchesRouteSettings</schema-box></textItem
+><textItem location="gui::25" history="24"><schema-box location="gui::25">InactiveBlockSection_Init<decl-part/> InactiveBlockSection<ax-part/> tracks = &empty;
+signals = &empty;
+routeSettings = &empty;
+switches = &empty;
+crossings = &empty;</schema-box></textItem
+><textItem location="gui::115" history="25"><schema-box location="gui::115">InactiveBlockSection_InstallTrack<decl-part/> &Delta;InactiveBlockSection
+from?: Location
+to?: Location
+length?: &Nopf;&sub1;
+compatibleTrainModels?: &Fopf; TrainModel
+maxSpeed?: &Nopf;<ax-part/> &not; (&exists; t: tracks &bullet; t.endpoints = {to?, from?})
+&exists; t: TrainTrack
+    &bullet; t.endpoints = {from?, to?}
+      &wedge; t.length = length?
+      &wedge; t.compatibility = compatibleTrainModels?
+      &wedge; t.maxSpeed = maxSpeed?
+      &wedge; tracks' = tracks &cup; {t}
+signals' = signals
+routeSettings' = routeSettings
+switches' = switches
+crossings' = crossings</schema-box></textItem
+><textItem location="gui::59" history="26"><schema-box location="gui::59">InactiveBlockSection_RemoveTrack<decl-part/> &Delta;InactiveBlockSection
+from?: Location
+to?: Location<ax-part/> (&exists; t: tracks &bullet; t.endpoints = {to?, from?} &wedge; tracks' = tracks \ {t})
+signals' = signals
+routeSettings' = routeSettings
+switches' = switches
+crossings' = crossings</schema-box></textItem
+><textItem location="gui::68" history="27"><axiomatic-box location="gui::68"><decl-part/>getEquipedJunctionLocations: InactiveBlockSection &rarr; &Fopf;Location<ax-part/>getEquipedJunctionLocations =
+     (&lambda;b:InactiveBlockSection
+           &bullet;{l:Location
+                 |(&exists;s:<word style="roman"/>ran<word/>(b.switches)&bullet;s.location=l)
+                  &vee; (&exists;cs:b.crossings&bullet;&exists;c:cs&bullet;c.location=l)})</axiomatic-box></textItem
+><textItem location="gui::65" history="28"><axiomatic-box location="gui::65"><decl-part/>getDivergingTracks: &Fopf;TrainTrack &cross;Location&cross;&Fopf;Location &rarrb; &Fopf; TrainTrack<ax-part/>  getDivergingTracks
+  = (&lambda; ts: &Fopf;TrainTrack; c:Location;ds:&Fopf;Location
+          | &forall;d:ds&bullet;#{t:ts|t.endpoints={c,d}}=1
+         &bullet; {  t: ts
+                | &exists; d: ds
+                      &bullet; t = getTrack(ts, {c, d} )})</axiomatic-box></textItem
+><textItem location="gui::63" history="29"><axiomatic-box location="gui::63"><decl-part/>getSwitch: TrainTrack &cross; &Fopf; TrainTrack &rarr; &Fopf; TrackContinuation<ax-part/> getSwitch
+  = (&lambda; convergingTrack: TrainTrack; divergingTracks: &Fopf; TrainTrack
+         &bullet; {  c: TrackContinuation
+                | &exists; d: divergingTracks &bullet; c = getTrackContinuation {convergingTrack, d} })</axiomatic-box></textItem
+><textItem location="gui::67" history="30"><schema-box location="gui::67">InactiveBlockSection_RegisterSwitch<decl-part/>    &Delta;InactiveBlockSection
+centre?: Location
+convergentEnd?: Location
+divergentEnds?: &Fopf; Location
+initialPosition?: Location<ax-part/>    initialPosition? &isin; divergentEnds?
+# (divergentEnds? &cup; {centre?, convergentEnd?}) = 2 + # divergentEnds?
+&forall; end: divergentEnds? &cup; {convergentEnd?}
+    &bullet; &exists; t: tracks &bullet; t.endpoints = {centre?, end}
+ centre? &notin; getEquipedJunctionLocations(&theta;InactiveBlockSection)
+&exists; to_add: &Fopf; TrackContinuation;
+  initc: TrackContinuation
+    &bullet;  to_add
+          = getSwitch ((getTrack (tracks, {centre?, convergentEnd?})),
+                       (getDivergingTracks (tracks, centre?,
+                                            divergentEnds?)))
+      &wedge; initc
+          = (&mu; c: to_add
+                 | initialPosition? &isin; &bigcup; (getTrackEndpoints c.endpoints))
+      &wedge; switches' = switches &oplus; {(to_add &rtarr; initc)}
+tracks' = tracks
+signals' = signals
+routeSettings' = routeSettings
+crossings' = crossings</schema-box></textItem
+><textItem location="gui::53" history="31"><schema-box location="gui::53">InactiveBlockSection_RegisterCrossing<decl-part/> &Delta;InactiveBlockSection
+centre?: Location
+ends?: &Fopf; (Location &cross; Location)<ax-part/> centre? &notin; getEquipedJunctionLocations &theta; InactiveBlockSection
+&forall; e: ends?
+    &bullet; &exists; t1, t2: tracks
+          &bullet; t1 &neq; t2
+            &wedge; t1.endpoints = {first e, centre?}
+            &wedge; t2.endpoints = {second e, centre?}
+crossings'
+  = crossings
+    &cup; {{  c: TrackContinuation
+            | &exists; e: ends?
+                  &bullet; c
+                      = getTrackContinuation {(getTrack (tracks,
+                                                         {(first e),
+                                                          centre?})),
+                                              (getTrack (tracks,
+                                                         {(second e),
+                                                          centre?}))} }}
+tracks' = tracks
+signals' = signals
+routeSettings' = routeSettings
+switches' = switches</schema-box></textItem
+><textItem location="gui::69" history="32"><schema-box location="gui::69">InactiveBlockSection_UnregisterJunction<decl-part/>   &Delta;InactiveBlockSection
+centre?: Location<ax-part/>centre?&isin;getEquipedJunctionLocations(&theta;InactiveBlockSection)
+  switches' = switches&vrtrib;{c:TrackContinuation|c.location=centre?}
+tracks' = tracks
+signals' = signals
+routeSettings' = routeSettings
+crossings' = crossings \ {cs:&Fopf;TrackContinuation|&exists;c:cs&bullet;c.location=centre?}</schema-box></textItem
+><textItem location="gui::73" history="33"><schema-box location="gui::73">InactiveBlockSection_RegisterRoute<decl-part/> &Delta;InactiveBlockSection
+entry?: Location
+exit?: Location<ax-part/> # {  t: tracks | entry? &isin; t.endpoints } = 1
+# {  t: tracks | exit? &isin; t.endpoints } = 1
+(entry?, exit?) &notin; <word style="roman"/>ran<word/> (<word style="roman"/>dom<word/> signals &vltri; routeMatches)
+&exists; r: <word style="roman"/>dom<word/> (routeMatches &vrtri; {(entry?, exit?)}); signals': Route &rarrb; Signal
+    &bullet; signals' = signals &oplus; {(r &rtarr; SIGNAL_BLOCKED)}
+      &wedge; BlockSection_AvailableRoutesAreMaximalAndShouldBeEquipped'
+tracks' = tracks
+routeSettings' = routeSettings
+switches' = switches
+crossings' = crossings</schema-box></textItem
+><textItem location="gui::76" history="34"><schema-box location="gui::76">InactiveBlockSection_UnregisterRoute<decl-part/>   &Delta;InactiveBlockSection
+entry?: Location
+exit?: Location<ax-part/>   # {  t: tracks | entry? &isin; t.endpoints } = 1
+# {  t: tracks | exit? &isin; t.endpoints } = 1
+&exists; r:<word style="roman"/>dom<word/>( <word style="roman"/>dom<word/> signals &vltri; routeMatches &vrtri; {(entry?, exit?)})
+    &bullet; signals' = {r} &vltrib; signals
+tracks' = tracks
+routeSettings' = routeSettings
+switches' = switches
+crossings' = crossings</schema-box></textItem
+><textItem location="gui::86" history="35"><schema-box location="gui::86">BlockSection_SetRoute<decl-part/> &Delta;BlockSection
+entry?: Location
+exit?: Location<ax-part/> <word style="roman"/>dom<word/> switches' = <word style="roman"/>dom<word/> switches
+&exists; r: <word style="roman"/>dom<word/>(<word style="roman"/>dom<word/> signals&vltri;routeMatches&vrtri;{(entry?, exit?)})
+    &bullet; r &notin; routeSettings
+      &wedge; r &isin; <word style="roman"/>dom<word/> signals
+      &wedge; (&forall; r2: routeSettings
+             &bullet; r.locationPath.vertices &cap; r2.locationPath.vertices = &empty;)
+      &wedge; signals' = signals &oplus; {(r &rtarr; SIGNAL_CLEARED)}
+      &wedge; routeSettings' = routeSettings &cup; {r}
+      &wedge; (&forall; s: <word style="roman"/>dom<word/> switches
+             &bullet; (&forall; c: r.trackContinuations
+                    &bullet; ((c &notin; s &rArr; switches' s = switches s)
+                       &wedge; (c &isin; s &rArr; switches' s = c))))
+tracks' = tracks
+crossings' = crossings</schema-box></textItem
+><textItem location="gui::84" history="36"><schema-box location="gui::84">BlockSection_CancelRoute<decl-part/> &Delta;BlockSection
+entry?: Location
+exit?: Location<ax-part/> &exists; r: <word style="roman"/>dom<word/>(<word style="roman"/>dom<word/> signals&vltri;routeMatches&vrtri;{(entry?, exit?)})
+    &bullet; r &isin; routeSettings
+      &wedge; signals' = signals &oplus; {(r &rtarr; SIGNAL_BLOCKED)}
+      &wedge; routeSettings' = routeSettings \ {r}
+tracks' = tracks
+switches' = switches
+crossings' = crossings</schema-box></textItem
+><textItem location="gui::81" history="37"><schema-box location="gui::81">BlockSection_CancelAllRoutes<decl-part/> &Delta;BlockSection<ax-part/> <word style="roman"/>dom<word/> signals' = <word style="roman"/>dom<word/> signals
+&forall; r: <word style="roman"/>dom<word/> signals &bullet; signals' r = SIGNAL_BLOCKED
+routeSettings' = &empty;
+tracks' = tracks
+switches' = switches
+crossings' = crossings</schema-box></textItem
+><textItem location="gui::23" history="38"><zed-box location="gui::23">DoorState ::= DOOR_OPEN | DOOR_CLOSED</zed-box></textItem
+><textItem location="gui::44" history="39"><zed-box location="gui::44">[HeadCode]</zed-box></textItem
+><textItem location="gui::24" history="40"><zed-box location="gui::24">[String]</zed-box></textItem
+><textItem location="gui::8" history="41"><schema-box location="gui::8">Train<decl-part/> model: TrainModel
+length: &Nopf;&sub1;
+currentTrack: TrainTrack
+distanceIntoTrack: &Nopf;
+occupiedTracks: <word style="roman"/>iseq<word/> TrainTrack
+speed: &Nopf;
+direction: Location
+leftDoors: DoorState
+rightDoors: DoorState<ax-part/> direction &isin; currentTrack.endpoints
+ currentTrack = head occupiedTracks</schema-box></textItem
+><textItem location="gui::43" history="42"><schema-box location="gui::43"> Platform <decl-part/>block:BlockSection
+doors:DoorState<ax-part/>block.switches=&empty;
+block.crossings=&empty;</schema-box></textItem
+><textItem location="gui::89" history="43"><axiomatic-box location="gui::89"><decl-part/>trackOccupancy:TrainTrack&cross;&Fopf;Train&rarr;&Fopf;Train<ax-part/>   &forall;track:TrainTrack;trains:&Fopf;Train
+     &bullet; trackOccupancy(track,trains)={t:trains|track&isin;<word style="roman"/>ran<word/>(t.occupiedTracks)}</axiomatic-box></textItem
+><textItem location="gui::46" history="44"><zed-box location="gui::46">BarrierState ::= BARRIER_RAISED | BARRIER_LOWERED</zed-box></textItem
+><textItem location="gui::49" history="45"><schema-box location="gui::49">TrainControlSystem<decl-part/>  activeBlocks: &Nopf; &rarrbtl; BlockSection
+inactiveBlocks: &Nopf; &rarrbtl; InactiveBlockSection
+levelCrossings: &Fopf; &Nopf; &rarrb; BarrierState
+stations: String &rarrbtl; <word style="roman"/>iseq<word/> Platform
+lines: String &rarrbtl; <word style="roman"/>iseq<word/> String
+trains: HeadCode &rarrbtl; Train<ax-part/>  <word style="roman"/>ran<word/> lines = <word style="roman"/>iseq<word/> (<word style="roman"/>dom<word/> stations)
+&bigcup; (<word style="roman"/>dom<word/> levelCrossings) &subeq; <word style="roman"/>dom<word/> activeBlocks &cup; <word style="roman"/>dom<word/> inactiveBlocks
+&forall; s: <word style="roman"/>ran<word/> stations
+    &bullet; &forall; platform: <word style="roman"/>ran<word/> s
+          &bullet; platform.block &isin; <word style="roman"/>ran<word/> activeBlocks &cup; <word style="roman"/>ran<word/> inactiveBlocks
+&forall; l: <word style="roman"/>ran<word/> lines &bullet; <word style="roman"/>ran<word/> l &subeq; <word style="roman"/>dom<word/> stations
+&forall; train: <word style="roman"/>ran<word/> trains
+    &bullet; <word style="roman"/>ran<word/> train.occupiedTracks
+        &subeq; {  t: TrainTrack | &exists; b: <word style="roman"/>ran<word/> activeBlocks &bullet; t &isin; b.tracks }</schema-box></textItem
+><textItem location="gui::97" history="46"><schema-box location="gui::97">InstallNewBlockSection<decl-part/> &Delta;TrainControlSystem
+blockSectionID!: &Nopf;<ax-part/> blockSectionID! = # activeBlocks + # inactiveBlocks + 1
+&exists; InactiveBlockSection_Init
+    &bullet; inactiveBlocks'
+        = inactiveBlocks &oplus; {(blockSectionID! &rtarr; &theta; InactiveBlockSection)}
+activeBlocks' = activeBlocks
+levelCrossings' = levelCrossings
+stations' = stations
+lines' = lines
+trains' = trains</schema-box></textItem
+><textItem location="gui::50" history="47"><schema-box location="gui::50">InstallNewLevelCrossing_NotInitialised<decl-part/> &Delta;TrainControlSystem
+blockSectionIDs?: &Fopf; &Nopf;<ax-part/> blockSectionIDs? &neq; &empty;
+blockSectionIDs? &subeq; <word style="roman"/>dom<word/> activeBlocks &cup; <word style="roman"/>dom<word/> inactiveBlocks
+blockSectionIDs? &notin; <word style="roman"/>dom<word/> levelCrossings
+activeBlocks' = activeBlocks
+inactiveBlocks' = inactiveBlocks
+levelCrossings' = levelCrossings &oplus; {(blockSectionIDs? &rtarr; BARRIER_LOWERED)}
+stations' = stations
+lines' = lines
+trains' = trains</schema-box></textItem
+><textItem location="gui::91" history="48"><schema-box location="gui::91">Update_LevelCrossings<decl-part/> &Delta;TrainControlSystem<ax-part/> <word style="roman"/>dom<word/> levelCrossings' = <word style="roman"/>dom<word/> levelCrossings
+&forall; ids: <word style="roman"/>dom<word/> levelCrossings
+    &bullet; (ids &subeq; <word style="roman"/>dom<word/> activeBlocks
+       &rArr; ((&exists; i: ids &bullet; (activeBlocks i).routeSettings &neq; &empty;)
+          &rArr; levelCrossings' ids = BARRIER_LOWERED)
+         &wedge; ((&forall; i: ids &bullet; (activeBlocks i).routeSettings = &empty;)
+            &rArr; levelCrossings' ids = BARRIER_RAISED))
+      &wedge; (ids &cap; <word style="roman"/>dom<word/> inactiveBlocks &neq; &empty;
+         &rArr; levelCrossings' ids = BARRIER_LOWERED)
+activeBlocks' = activeBlocks
+inactiveBlocks' = inactiveBlocks
+stations' = stations
+lines' = lines
+trains' = trains</schema-box></textItem
+><textItem location="gui::98" history="49"><zed-box location="gui::98">InstallNewLevelCrossing &eqhat; InstallNewLevelCrossing_NotInitialised &fatsemi; Update_LevelCrossings</zed-box></textItem
+><textItem location="gui::82" history="50"><schema-box location="gui::82">Update_InactiveBlockSection<decl-part/> &Delta;TrainControlSystem
+&Delta;InactiveBlockSection
+blockSectionID?: &Nopf;<ax-part/> blockSectionID? &isin; <word style="roman"/>dom<word/> inactiveBlocks
+&theta; InactiveBlockSection = inactiveBlocks blockSectionID?
+inactiveBlocks'
+  = inactiveBlocks &oplus; {(blockSectionID? &rtarr; &theta; InactiveBlockSection')}
+activeBlocks' = activeBlocks
+levelCrossings' = levelCrossings
+stations' = stations
+lines' = lines
+trains' = trains</schema-box></textItem
+><textItem location="gui::54" history="51"><schema-box location="gui::54">Update_ActiveBlockSection<decl-part/> &Delta;TrainControlSystem
+&Delta;BlockSection
+blockSectionID?: &Nopf;<ax-part/> blockSectionID? &isin; <word style="roman"/>dom<word/> activeBlocks
+&theta; BlockSection = activeBlocks blockSectionID?
+activeBlocks' = activeBlocks &oplus; {(blockSectionID? &rtarr; &theta; BlockSection')}
+inactiveBlocks' = inactiveBlocks
+levelCrossings' = levelCrossings
+stations' = stations
+lines' = lines
+trains' = trains</schema-box></textItem
+><textItem location="gui::56" history="52"><zed-box location="gui::56">InstallTrack_Unchecked &eqhat;
+&exists; &Delta;InactiveBlockSection
+&bullet; InactiveBlockSection_InstallTrack &wedge; Update_InactiveBlockSection</zed-box></textItem
+><textItem location="gui::52" history="53"><schema-box location="gui::52">InstallTrack<decl-part/>  InstallTrack_Unchecked<ax-part/> &not; (&exists; b: <word style="roman"/>ran<word/> activeBlocks &cup; <word style="roman"/>ran<word/> inactiveBlocks
+       &bullet; (&exists; t: b.tracks &bullet; t.endpoints = {to?, from?}))
+&forall; b: <word style="roman"/>ran<word/> activeBlocks &cup; <word style="roman"/>ran<word/> inactiveBlocks
+    &bullet; (&exists; t: b.tracks &bullet; t.endpoints &cap; {to?, from?} &neq; &empty;)
+      &rArr; inactiveBlocks blockSectionID? = b</schema-box></textItem
+><textItem location="gui::116" history="54"><zed-box location="gui::116">RemoveTrack &eqhat;
+&exists; &Delta;InactiveBlockSection
+&bullet; InactiveBlockSection_RemoveTrack&wedge; Update_InactiveBlockSection</zed-box></textItem
+><textItem location="gui::72" history="55"><zed-box location="gui::72">RegisterSwitch &eqhat;
+&exists; &Delta;InactiveBlockSection
+&bullet; InactiveBlockSection_RegisterSwitch &wedge; Update_InactiveBlockSection</zed-box></textItem
+><textItem location="gui::71" history="56"><zed-box location="gui::71">RegisterCrossing &eqhat;
+&exists; &Delta;InactiveBlockSection
+&bullet; InactiveBlockSection_RegisterCrossing &wedge; Update_InactiveBlockSection</zed-box></textItem
+><textItem location="gui::66" history="57"><zed-box location="gui::66">UnregisterJunction &eqhat;
+&exists; &Delta;InactiveBlockSection
+&bullet; InactiveBlockSection_UnregisterJunction &wedge; Update_InactiveBlockSection</zed-box></textItem
+><textItem location="gui::77" history="58"><zed-box location="gui::77">RegisterRoute &eqhat;
+&exists; &Delta;InactiveBlockSection
+&bullet; InactiveBlockSection_RegisterRoute &wedge; Update_InactiveBlockSection</zed-box></textItem
+><textItem location="gui::75" history="59"><zed-box location="gui::75">UnregisterRoute &eqhat;
+&exists; &Delta;InactiveBlockSection
+&bullet; InactiveBlockSection_UnregisterRoute &wedge; Update_InactiveBlockSection</zed-box></textItem
+><textItem location="gui::85" history="60"><zed-box location="gui::85">SetRoute_Unchecked_WithoutLevelCrossing &eqhat;
+&exists; &Delta;BlockSection &bullet; BlockSection_SetRoute &wedge; Update_ActiveBlockSection</zed-box></textItem
+><textItem location="gui::94" history="61"><zed-box location="gui::94">SetRoute_Unchecked &eqhat;
+SetRoute_Unchecked_WithoutLevelCrossing &fatsemi; Update_LevelCrossings</zed-box></textItem
+><textItem location="gui::93" history="62"><zed-box location="gui::93">CancelRoute_Unchecked_WithoutLevelCrossing &eqhat;
+&exists; &Delta;BlockSection &bullet; BlockSection_CancelRoute &wedge; Update_ActiveBlockSection</zed-box></textItem
+><textItem location="gui::88" history="63"><zed-box location="gui::88">CancelRoute_Unchecked &eqhat; CancelRoute_Unchecked_WithoutLevelCrossing &fatsemi; Update_LevelCrossings</zed-box></textItem
+><textItem location="gui::87" history="64"><schema-box location="gui::87">CancelRoute<decl-part/> CancelRoute_Unchecked<ax-part/> &forall; r: <word style="roman"/>dom<word/> (<word style="roman"/>dom<word/> (activeBlocks blockSectionID?).signals &vltri; routeMatches
+          &vrtri; {(entry?, exit?)})
+    &bullet; &forall; t: <word style="roman"/>ran<word/> r.trackContinuationPath.vertices
+          &bullet; trackOccupancy (t, (<word style="roman"/>ran<word/> trains)) = &empty;</schema-box></textItem
+><textItem location="gui::96" history="65"><zed-box location="gui::96">CancelAllRoutesForBlock_Unchecked_WithoutLevelCrossing &eqhat;
+&exists; &Delta;BlockSection &bullet; BlockSection_CancelAllRoutes &wedge; Update_ActiveBlockSection</zed-box></textItem
+><textItem location="gui::83" history="66"><zed-box location="gui::83">CancelAllRoutesForBlock_Unchecked &eqhat; 
+CancelAllRoutesForBlock_Unchecked_WithoutLevelCrossing &fatsemi; Update_LevelCrossings</zed-box></textItem
+><textItem location="gui::95" history="67"><schema-box location="gui::95">CancelAllRoutesForBlock<decl-part/>    CancelAllRoutesForBlock_Unchecked<ax-part/>    &forall; r: <word style="roman"/>dom<word/> (<word style="roman"/>dom<word/> (activeBlocks blockSectionID?).signals &vltri; routeMatches)
+    &bullet; &forall; t: <word style="roman"/>ran<word/> r.trackContinuationPath.vertices
+          &bullet; trackOccupancy (t, (<word style="roman"/>ran<word/> trains)) = &empty;</schema-box></textItem
+><textItem location="gui::79" history="68"><schema-box location="gui::79">ActivateBlockSection<decl-part/> &Delta;TrainControlSystem
+blockSectionID?: &Nopf;<ax-part/> blockSectionID? &isin; <word style="roman"/>dom<word/> inactiveBlocks
+inactiveBlocks blockSectionID? &isin; BlockSection
+inactiveBlocks' = {blockSectionID?} &vltrib; inactiveBlocks
+activeBlocks'
+  = activeBlocks &oplus; {(blockSectionID? &rtarr; inactiveBlocks blockSectionID?)}
+levelCrossings' = levelCrossings
+stations' = stations
+lines' = lines
+trains' = trains</schema-box></textItem
+><textItem location="gui::78" history="69"><schema-box location="gui::78">DeactivateBlockSection_NotCleared<decl-part/> &Delta;TrainControlSystem
+blockSectionID?: &Nopf;<ax-part/> blockSectionID? &isin; <word style="roman"/>dom<word/> activeBlocks
+activeBlocks' = {blockSectionID?} &vltrib; activeBlocks
+inactiveBlocks'
+  = inactiveBlocks &oplus; {(blockSectionID? &rtarr; activeBlocks blockSectionID?)}
+levelCrossings' = levelCrossings
+stations' = stations
+lines' = lines
+trains' = trains</schema-box></textItem
+><textItem location="gui::80" history="70"><zed-box location="gui::80">DeactivateBlockSection &eqhat;
+CancelAllRoutesForBlock &fatsemi; DeactivateBlockSection_NotCleared</zed-box></textItem
+><textItem location="gui::100" history="71"><schema-box location="gui::100">BuildNewStation<decl-part/> &Delta;TrainControlSystem
+name?: String
+platforms?: <word style="roman"/>iseq<word/> &Nopf;<ax-part/> platforms? &neq; &lang;&rang;
+name? &notin; <word style="roman"/>dom<word/> stations
+stations'
+  = stations
+    &oplus; {(name?
+        &rtarr; {  p: &Nopf; &cross; Platform
+               | first p &isin; <word style="roman"/>dom<word/> platforms?
+                 &wedge; (second p).block
+                     = (activeBlocks
+                        &cup; inactiveBlocks) (platforms? (first p)) })}
+activeBlocks' = activeBlocks
+inactiveBlocks' = inactiveBlocks
+levelCrossings' = levelCrossings
+lines' = lines
+trains' = trains</schema-box></textItem
+><textItem location="gui::101" history="72"><schema-box location="gui::101">RegisterNewLine<decl-part/> &Delta;TrainControlSystem
+name?: String
+stations?: <word style="roman"/>iseq<word/> String<ax-part/> stations? &neq; &lang;&rang;
+name? &notin; <word style="roman"/>dom<word/> lines
+lines' = lines &oplus; {(name? &rtarr; stations?)}
+activeBlocks' = activeBlocks
+inactiveBlocks' = inactiveBlocks
+levelCrossings' = levelCrossings
+stations' = stations
+trains' = trains</schema-box></textItem
+><textItem location="gui::99" history="73"><schema-box location="gui::99">IntroduceNewTrain<decl-part/> &Delta;TrainControlSystem
+headcode?: HeadCode
+model?: TrainModel
+length?: &Nopf;&sub1;
+trackFront?: Location
+trackRear?: Location<ax-part/> headcode? &notin; <word style="roman"/>dom<word/> trains
+&exists; t: Train; b: <word style="roman"/>ran<word/> activeBlocks
+    &bullet; &exists; route: b.routeSettings
+          &bullet; &exists; track: <word style="roman"/>ran<word/> route.trackContinuationPath.vertices
+                &bullet; track.endpoints = {trackFront?, trackRear?}
+                  &wedge; track.length &geq; length?
+                  &wedge; model? &isin; track.compatibility
+                  &wedge; t.model = model?
+                  &wedge; t.length = length?
+                  &wedge; t.currentTrack = track
+                  &wedge; t.distanceIntoTrack = track.length
+                  &wedge; t.occupiedTracks = &lang;track&rang;
+                  &wedge; t.speed = 0
+                  &wedge; t.direction = trackFront?
+                  &wedge; t.leftDoors = DOOR_CLOSED
+                  &wedge; t.rightDoors = DOOR_CLOSED
+                  &wedge; trains' = trains &oplus; {(headcode? &rtarr; t)}
+activeBlocks' = activeBlocks
+inactiveBlocks' = inactiveBlocks
+levelCrossings' = levelCrossings
+stations' = stations
+lines' = lines</schema-box></textItem
+><textItem location="gui::103" history="74"><axiomatic-box location="gui::103"><decl-part/>getSignalsAtLocation:&Fopf;BlockSection&cross;TrainTrack&cross;Location&rarr;&Fopf;Signal<ax-part/>&forall; bs:&Fopf;BlockSection; t:TrainTrack; l:Location
+        &bullet; getSignalsAtLocation(bs,t,l) = {s:Signal|&exists;b:bs
+                 &bullet; &exists; r : <word style="roman"/>dom<word/>b.signals
+                        &bullet; head r.locationPath.vertices = l
+                          &wedge; head r.trackContinuationPath.vertices &neq; t
+                          &wedge; b.signals r = s}</axiomatic-box></textItem
+><textItem location="gui::102" history="75"><schema-box location="gui::102">RefreshAutoTrainOperation<decl-part/>  &Delta;TrainControlSystem<ax-part/>  <word style="roman"/>dom<word/> trains' = <word style="roman"/>dom<word/> trains
+&forall; h: <word style="roman"/>dom<word/> trains
+    &bullet; &exists; t1, t2: Train
+          &bullet; t1 = trains h
+            &wedge; t2 = trains' h
+            &wedge; t2.model = t1.model
+            &wedge; t2.length = t1.length
+            &wedge; t2.currentTrack = t1.currentTrack
+            &wedge; t2.distanceIntoTrack = t1.distanceIntoTrack
+            &wedge; t2.occupiedTracks = t1.occupiedTracks
+            &wedge; t2.direction = t1.direction
+            &wedge; t2.leftDoors = DOOR_CLOSED
+            &wedge; t2.rightDoors = DOOR_CLOSED
+            &wedge; (getSignalsAtLocation ((<word style="roman"/>ran<word/> activeBlocks), t1.currentTrack,
+                                     t1.direction) = &empty;
+               &rArr; t2.speed = t1.currentTrack.maxSpeed)
+            &wedge; (&exists; s: getSignalsAtLocation ((<word style="roman"/>ran<word/> activeBlocks),
+                                          t1.currentTrack, t1.direction)
+                   &bullet; (s = SIGNAL_CLEARED
+                      &rArr; t2.speed = t1.currentTrack.maxSpeed))
+            &wedge; (getSignalsAtLocation ((<word style="roman"/>ran<word/> activeBlocks), t1.currentTrack,
+                                     t1.direction) &neq; &empty;
+               &wedge; (&forall; s: getSignalsAtLocation ((<word style="roman"/>ran<word/> activeBlocks),
+                                             t1.currentTrack, t1.direction)
+                      &bullet; s = SIGNAL_BLOCKED)
+               &rArr; t2.speed = 0)
+activeBlocks' = activeBlocks
+inactiveBlocks' = inactiveBlocks
+levelCrossings' = levelCrossings
+stations' = stations
+lines' = lines</schema-box></textItem
+><textItem location="gui::105" history="76"><zed-box location="gui::105">DisplayedTrackState ::= TRACK_OCCUPIED | TRACK_SET | TRACK_UNSET</zed-box></textItem
+><textItem location="gui::106" history="77"><schema-box location="gui::106">MimicPanel_DisplayTracks<decl-part/>   &Xi;TrainControlSystem
+tracks!: &Fopf; (Location &cross; Location &cross; DisplayedTrackState &cross; &Nopf;)<ax-part/>   &forall; l1, l2: Location; d: DisplayedTrackState; n: &Nopf;
+    &bullet; (l1, l2, d, n) &isin; tracks!
+      &hArr; n &isin; <word style="roman"/>dom<word/> activeBlocks &cup; <word style="roman"/>dom<word/> inactiveBlocks
+        &wedge; (&exists; b: BlockSection
+               &bullet; (b = (activeBlocks &cup; inactiveBlocks) n
+                  &wedge; (&exists; t: b.tracks
+                         &bullet; (t.endpoints = {l1, l2}
+                            &wedge; (trackOccupancy (t, (<word style="roman"/>ran<word/> trains)) &neq; &empty;
+                               &rArr; d = TRACK_OCCUPIED)
+                            &wedge; (trackOccupancy (t, (<word style="roman"/>ran<word/> trains)) = &empty;
+                               &wedge; (&exists; r: b.routeSettings
+                                      &bullet; t
+                                          &isin; <word style="roman"/>ran<word/> r.trackContinuationPath.vertices)
+                               &rArr; d = TRACK_SET)
+                            &wedge; (trackOccupancy (t, (<word style="roman"/>ran<word/> trains)) = &empty;
+                               &wedge; (&forall; r: b.routeSettings
+                                      &bullet; t
+                                          &notin; <word style="roman"/>ran<word/> r.trackContinuationPath.vertices)
+                               &rArr; d = TRACK_UNSET)))))</schema-box></textItem
+><textItem location="gui::108" history="78"><schema-box location="gui::108">MimicPanel_DisplaySignals<decl-part/> &Xi;TrainControlSystem
+signals!: &Fopf; (Location &cross; Location &cross; Signal)<ax-part/> &forall; l1, l2: Location; s: Signal
+    &bullet; (l1, l2, s) &isin; signals!
+      &hArr; (&exists; b: <word style="roman"/>ran<word/> activeBlocks &cup; <word style="roman"/>ran<word/> inactiveBlocks
+             &bullet; (&exists; r: <word style="roman"/>dom<word/> (<word style="roman"/>dom<word/> b.signals &vltri; routeMatches &vrtri; {(l1, l2)})
+                    &bullet; s = b.signals r))</schema-box></textItem
+><textItem location="gui::107" history="79"><schema-box location="gui::107">MimicPanel_DisplayStations<decl-part/>  &Xi;TrainControlSystem
+stations!: &Fopf; (String&cross;<word style="roman"/>iseq<word/>&Nopf;)<ax-part/>  &forall; s:String; p:<word style="roman"/>iseq<word/>&Nopf;
+    &bullet; (s,p) &isin; stations!
+      &hArr; ((s&isin;<word style="roman"/>dom<word/>stations)&wedge;#p=#(stations s)&wedge;(&forall;i:<word style="roman"/>dom<word/>p
+              &bullet; p i &isin; <word style="roman"/>dom<word/>(activeBlocks &cup; inactiveBlocks)
+                 &wedge; (activeBlocks &cup; inactiveBlocks) (p i) = ((stations s) i).block))</schema-box></textItem
+><textItem location="gui::109" history="80"><schema-box location="gui::109">MimicPanel_DisplayLevelCrossings<decl-part/>  &Xi;TrainControlSystem
+levelCrossings! : &Fopf; ((&Fopf;&Nopf;)&cross;BarrierState)<ax-part/>  levelCrossings! = levelCrossings</schema-box></textItem
+><textItem location="gui::104" history="81"><zed-box location="gui::104">DisplayMimicPanel &eqhat; MimicPanel_DisplayTracks &wedge; MimicPanel_DisplaySignals &wedge; MimicPanel_DisplayStations
+&wedge; MimicPanel_DisplayLevelCrossings</zed-box></textItem
+><textItem location="gui::110" history="82"><schema-box location="gui::110">ReportTrainLocation<decl-part/> &Delta;TrainControlSystem
+headcode?: HeadCode
+occupiedTracks?: <word style="roman"/>iseq<word/> (Location &cross; Location)
+distanceIntoTrack?: &Nopf;<ax-part/> headcode? &isin; <word style="roman"/>dom<word/> trains
+&exists; t1, t2: Train
+    &bullet; t1 = trains headcode?
+      &wedge; t2.model = t1.model
+      &wedge; t2.length = t1.length
+      &wedge; t2.distanceIntoTrack = distanceIntoTrack?
+      &wedge; t2.speed = t1.speed
+      &wedge; t2.direction = t1.direction
+      &wedge; t2.leftDoors = t1.leftDoors
+      &wedge; t2.rightDoors = t1.rightDoors
+      &wedge; t2.currentTrack = head t2.occupiedTracks
+      &wedge; <word style="roman"/>dom<word/> t2.occupiedTracks = 1 .. # occupiedTracks?
+      &wedge; (&forall; i: <word style="roman"/>dom<word/> occupiedTracks?
+             &bullet; (&exists; b: <word style="roman"/>ran<word/> activeBlocks
+                    &bullet; (&exists; t: b.tracks
+                           &bullet; (t.endpoints
+                                = {first (occupiedTracks? i),
+                                   second (occupiedTracks? i)}
+                              &wedge; t2.occupiedTracks i = t))))
+      &wedge; trains' = trains &oplus; {(headcode? &rtarr; t2)}
+activeBlocks' = activeBlocks
+inactiveBlocks' = inactiveBlocks
+levelCrossings' = levelCrossings
+stations' = stations
+lines' = lines</schema-box></textItem
+><textItem location="gui::111" history="83"><schema-box location="gui::111"> Init <decl-part/>TrainControlSystem<ax-part/>activeBlocks = &empty;
+inactiveBlocks = &empty;
+levelCrossings = &empty;
+stations = &empty;
+lines = &empty;
+trains = &empty;</schema-box></textItem
+><textItem location="gui::112" history="84"><theorem-def location="gui::112">TrainsNeverCollide<ax-part/>      &forall; TrainControlSystem 
+&bullet;( &forall; block:<word style="roman"/>ran<word/>(activeBlocks&cup;inactiveBlocks)
+&bullet;(&forall;track:block.tracks
+&bullet;#(trackOccupancy(track, (<word style="roman"/>ran<word/> trains)))&leq;1))</theorem-def></textItem
+><textItem location="gui::113" history="85"><theorem-def location="gui::113">SafeBlockSectionDesignExists<ax-part/>&exists; InactiveBlockSection &bullet; BlockSection</theorem-def></textItem
+><textItem location="gui::114" history="86"><theorem-def location="gui::114">BlockSectionsAreAlwaysControllable<ax-part/>   &forall; BlockSection
+&bullet; &exists; BlockSection' &bullet; BlockSection_SetRoute &vee; BlockSection_CancelRoute</theorem-def></textItem
+><script name="Update_LevelCrossings$domainCheck"></script
+><script name="getSignalsAtLocation$domainCheck"></script
+><script name="trackOccupancy$domainCheck"></script
+><script name="InactiveBlockSection_UnregisterJunction$domainCheck"></script
+><script name="getTrackContinuation$domainCheck"></script
+><script name="BlockSection_CancelAllRoutes$domainCheck"></script
+><script name="ReportTrainLocation$domainCheck"></script
+><script name="TrackContinuation$domainCheck"><scriptItem><ztext>prove by reduce</ztext><provercmd name="prove-by-reduce"></provercmd></scriptItem
+></script
+><script name="MimicPanel_DisplayTracks$domainCheck"></script
+><script name="BuildNewStation$domainCheck"></script
+><script name="InstallNewBlockSection$domainCheck"></script
+><script name="InactiveBlockSection_RegisterRoute$domainCheck"></script
+><script name="BlockSection$domainCheck"><scriptItem><ztext>prove by reduce</ztext><provercmd name="prove-by-reduce"></provercmd></scriptItem
+></script
+><script name="InstallTrack$domainCheck"></script
+><script name="BlockSection_CrossingsAreValidAndDisjoint$domainCheck"></script
+><script name="BlockSectionsAreAlwaysControllable"></script
+><script name="Update_ActiveBlockSection$domainCheck"></script
+><script name="Edge$domainCheck"><scriptItem><ztext>prove by reduce</ztext><provercmd name="prove-by-reduce"></provercmd></scriptItem
+></script
+><script name="routeMatches$domainCheck"></script
+><script name="InactiveBlockSection_UnregisterRoute$domainCheck"></script
+><script name="RefreshAutoTrainOperation$domainCheck"></script
+><script name="Update_InactiveBlockSection$domainCheck"></script
+><script name="getDivergingTracks$domainCheck"></script
+><script name="BlockSection_AvailableRoutesAreMaximalAndShouldBeEquipped$domainCheck"></script
+><script name="ActivateBlockSection$domainCheck"></script
+><script name="CancelAllRoutesForBlock$domainCheck"></script
+><script name="Interlocking_EquipmentMatchesRouteSettings$domainCheck"></script
+><script name="getTrack$domainCheck"><scriptItem><ztext>prove by reduce</ztext><provercmd name="prove-by-reduce"></provercmd></scriptItem
+></script
+><script name="TrainsNeverCollide"></script
+><script name="BlockSection_SetRoute$domainCheck"></script
+><script name="Route$domainCheck"></script
+><script name="CancelRoute$domainCheck"></script
+><script name="BlockSection_JunctionsAreEquippedCompletely$domainCheck"></script
+><script name="InactiveBlockSection_RegisterSwitch$domainCheck"></script
+><script name="BlockSection_TracksShouldBeConnected$domainCheck"></script
+><script name="Path$domainCheck"></script
+><script name="MimicPanel_DisplaySignals$domainCheck"></script
+><script name="Train$domainCheck"></script
+><script name="DeactivateBlockSection_NotCleared$domainCheck"></script
+><script name="MimicPanel_DisplayStations$domainCheck"></script
+><script name="SafeBlockSectionDesignExists"></script
+><script name="InactiveBlockSection_RegisterCrossing$domainCheck"></script
+><script name="getSwitch$domainCheck"></script
+><script name="BlockSection_SwitchesAreValidStarGraphs$domainCheck"></script
+></Z-EVES-GUI-State>
